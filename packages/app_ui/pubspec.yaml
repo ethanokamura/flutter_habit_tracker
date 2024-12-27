@@ -1,0 +1,25 @@
+name: app_ui
+description: "Main UI packages for habit_tracker"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  # api_client:
+  #   path: ../api_client
+  # app_core:
+  #   path: ../app_core
+  auto_size_text: ^3.0.0
+  flutter:
+    sdk: flutter
+  flutter_slidable: ^3.1.2
+  font_awesome_flutter: ^10.7.0
+  google_fonts: ^6.2.1
+
+dev_dependencies:
+  very_good_analysis: ^6.0.0
+
+flutter:
+  generate: true

@@ -1,0 +1,34 @@
+name: habit_tracker
+description: "Getting better. One day at a time."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  api_client:
+    path: packages/api_client
+  app_core:
+    path: packages/app_core
+  app_ui:
+    path: packages/app_ui
+  flutter:
+    sdk: flutter
+  intl: any
+  habit_repository:
+    path: packages/habit_repository
+  provider: ^6.1.2
+  flutter_heatmap_calendar: ^1.0.5
+
+dev_dependencies:
+  analyzer: ^6.7.0
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  generate: true
+  uses-material-design: true
+  assets:
+    - assets/

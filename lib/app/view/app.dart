@@ -4,7 +4,7 @@ import 'package:habit_repository/habit_repository.dart';
 import 'package:habit_tracker/app/cubit/app_cubit.dart';
 import 'package:habit_tracker/features/empty_page.dart';
 import 'package:habit_tracker/features/error_page.dart';
-import 'package:habit_tracker/features/habits/view/habit_page.dart';
+import 'package:habit_tracker/features/home/home.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
 import 'package:habit_tracker/theme/theme_cubit.dart';
 
@@ -14,7 +14,7 @@ List<Page<dynamic>> onGenerateAppPages(
   List<Page<dynamic>> pages,
 ) {
   if (status.isLoaded) {
-    return [HabitPage.page()];
+    return [HomePage.page()];
   }
   if (status.isEmpty) {
     return [EmptyPage.page()];

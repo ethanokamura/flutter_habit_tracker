@@ -1,0 +1,13 @@
+{
+  "@@locale": "en",
+  "appTitle": "Habit Tracker",
+  "settingsPage": "App Settings",
+  "lightMode": "Light Mode",
+  "darkMode": "Dark Mode",
+  "editHabitName": "What's this habit?",
+  "cancel": "Cancel",
+  "save": "Save",
+  "confirmDelete": "Are you sure you want to delete?",
+  "delete": "delete",
+  "failureToLoad": "Failure to load Habit"
+}

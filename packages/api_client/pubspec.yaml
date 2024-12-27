@@ -1,0 +1,21 @@
+name: api_client
+description: "Main package for habit_tracker's APIs"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
+  path_provider: ^2.1.5
+
+dev_dependencies:
+  isar_generator: ^3.1.0+1
+  very_good_analysis: ^6.0.0
+
+flutter:
+  generate: true

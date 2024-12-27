@@ -6,6 +6,7 @@ class MonthlyHeatMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final currentDate = DateTime(
       DateTime.now().year,
       DateTime.now().month,
@@ -15,28 +16,23 @@ class MonthlyHeatMap extends StatelessWidget {
     return GridView.builder(
       itemCount: days,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 7, // 7 days in a week
+        crossAxisCount: 7,
         crossAxisSpacing: defaultPadding,
         mainAxisSpacing: defaultPadding,
       ),
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        final startDate = DateTime(currentDate.year, currentDate.month, 1);
-        final date = startDate.add(Duration(days: index));
-        final normalizedDate = DateTime(date.year, date.month, date.day);
-        final hasData = datasets.containsKey(normalizedDate);
-        final int value = hasData ? datasets[normalizedDate]! : 0;
-        // Determine the color for the heatmap
-        final color = value > 0
-            ? context.theme.heatMapColors[value.clamp(1, 5)]
-            : normalizedDate == currentDate
-                ? context.theme.colorScheme.primary
-                : context.theme.colorScheme.surface;
-
+        final date = DateTime(currentDate.year, currentDate.month, 1)
+            .add(Duration(days: index));
+        final int value = datasets.containsKey(date) ? datasets[date]! : 0;
         return Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: color,
+            color: value > 0
+                ? theme.heatMapColors[value.clamp(1, 5)]
+                : date == currentDate
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.surface,
             borderRadius: defaultBorderRadius,
           ),
           child: PrimaryText(

@@ -59,6 +59,8 @@ extension CustomThemeData on ThemeData {
       ? CustomColors.inverseDarkTextColor
       : CustomColors.inverseLightTextColor;
 
+  /// [heatMapColors]
+  /// Used on for coloring the heatmap
   List<Color> get heatMapColors => CustomColors.heatmapColors;
 }
 

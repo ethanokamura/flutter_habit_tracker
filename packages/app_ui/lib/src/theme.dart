@@ -58,6 +58,8 @@ extension CustomThemeData on ThemeData {
   Color get inverseTextColor => brightness == Brightness.dark
       ? CustomColors.inverseDarkTextColor
       : CustomColors.inverseLightTextColor;
+
+  List<Color> get heatMapColors => CustomColors.heatmapColors;
 }
 
 // Dark Mode

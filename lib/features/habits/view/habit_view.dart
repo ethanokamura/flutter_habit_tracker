@@ -61,6 +61,7 @@ class _HabitPageViewState extends State<HabitPageView> {
       ],
       body: ListView(
         children: [
+          VerticalSpacer(),
           HabitHeatMap(habits: widget.habitCubit.state.habits),
           HabitList(
             habits: widget.habitCubit.state.habits,

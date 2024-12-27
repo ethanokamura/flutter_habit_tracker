@@ -22,4 +22,22 @@ class HabitHeatMapCubit extends Cubit<HabitHeatMapState> {
       emit(state.fromFailure(failure));
     }
   }
+
+  void updateHabits(List<Habit> updatedHabits) {
+    final dataset = _buildHeatMap(updatedHabits);
+    emit(state.fromLoadedDataSet(dataset: dataset));
+  }
+
+  Map<DateTime, int> _buildHeatMap(List<Habit> habits) {
+    Map<DateTime, int> dataset = {};
+    for (var habit in habits) {
+      for (var date in habit.completedDays) {
+        final normalizedDate = DateTime(date.year, date.month, date.day);
+        dataset[normalizedDate] = dataset.containsKey(normalizedDate)
+            ? dataset[normalizedDate]! + 1
+            : 1;
+      }
+    }
+    return dataset;
+  }
 }

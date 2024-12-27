@@ -13,6 +13,7 @@ final class HabitHeatMapState extends Equatable {
   /// Private constructor for creating [HabitHeatMapState] instances.
   const HabitHeatMapState._({
     this.status = HabitHeatMapStatus.initial,
+    this.dataset = const {},
     this.firstLaunchDate,
     this.failure = HabitFailure.empty,
   });
@@ -21,6 +22,7 @@ final class HabitHeatMapState extends Equatable {
   const HabitHeatMapState.initial() : this._();
 
   final HabitHeatMapStatus status;
+  final Map<DateTime, int> dataset;
   final DateTime? firstLaunchDate;
   final HabitFailure failure;
 
@@ -28,6 +30,7 @@ final class HabitHeatMapState extends Equatable {
   @override
   List<Object?> get props => [
         status,
+        dataset,
         firstLaunchDate,
         failure,
       ];
@@ -36,11 +39,13 @@ final class HabitHeatMapState extends Equatable {
   /// Any parameter that is not provided will retain its current value.
   HabitHeatMapState copyWith({
     HabitHeatMapStatus? status,
+    Map<DateTime, int>? dataset,
     DateTime? firstLaunchDate,
     HabitFailure? failure,
   }) {
     return HabitHeatMapState._(
       status: status ?? this.status,
+      dataset: dataset ?? this.dataset,
       firstLaunchDate: firstLaunchDate ?? this.firstLaunchDate,
       failure: failure ?? this.failure,
     );
@@ -63,6 +68,12 @@ extension _HabitHeatMapStateExtensions on HabitHeatMapState {
       copyWith(
         status: HabitHeatMapStatus.loaded,
         firstLaunchDate: firstLaunch,
+      );
+
+  HabitHeatMapState fromLoadedDataSet({required Map<DateTime, int> dataset}) =>
+      copyWith(
+        status: HabitHeatMapStatus.loaded,
+        dataset: dataset,
       );
 
   HabitHeatMapState fromFailure(HabitFailure failure) => copyWith(

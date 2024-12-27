@@ -2,7 +2,7 @@ import 'package:app_core/app_core.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:habit_repository/habit_repository.dart';
 import 'package:habit_tracker/features/heatmap/cubit/habit_heat_map_cubit.dart';
-import 'package:habit_tracker/features/heatmap/view/heatmap_view.dart';
+import 'package:habit_tracker/features/heatmap/view/hm_week.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
 
 class HabitHeatMap extends StatelessWidget {
@@ -21,28 +21,13 @@ class HabitHeatMap extends StatelessWidget {
           } else if (state.isFailure) {
             return _errorWidget(context.l10n.failureToLoad);
           }
-          final dataset = _buildHeatMap(habits);
-          final startDate = state.firstLaunchDate;
-          return HabitHeatMapView(startDate: startDate!, datasets: dataset);
+          context.read<HabitHeatMapCubit>().updateHabits(habits);
+          final dataset = state.dataset;
+          return WeeklyHeatMap(datasets: dataset);
         },
       ),
     );
   }
-}
-
-Map<DateTime, int> _buildHeatMap(List<Habit> habits) {
-  Map<DateTime, int> dataset = {};
-  for (var habit in habits) {
-    for (var date in habit.completedDays) {
-      // normalize date to avoid time discrepencies
-      final normalizedDate = DateTime(date.year, date.month, date.day);
-      // if date already exists, increment count
-      dataset[normalizedDate] = dataset.containsKey(normalizedDate)
-          ? dataset[normalizedDate]! + 1
-          : 1;
-    }
-  }
-  return dataset;
 }
 
 Widget _loadingWidget() {

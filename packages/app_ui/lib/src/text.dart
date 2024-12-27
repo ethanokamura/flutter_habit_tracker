@@ -83,12 +83,14 @@ class PrimaryText extends StatelessWidget {
     required this.text,
     this.maxLines,
     this.fontSize,
+    this.inverted,
     this.staticSize,
     super.key,
   });
   final String text;
   final int? maxLines;
   final double? fontSize;
+  final bool? inverted;
   final bool? staticSize;
   @override
   Widget build(BuildContext context) {
@@ -98,7 +100,9 @@ class PrimaryText extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: maxLines ?? 1,
             style: TextStyle(
-              color: context.theme.textColor,
+              color: inverted == null || !inverted!
+                  ? context.theme.textColor
+                  : context.theme.inverseTextColor,
               fontSize: fontSize ?? 16,
             ),
           )
@@ -108,7 +112,9 @@ class PrimaryText extends StatelessWidget {
             maxLines: maxLines ?? 1,
             maxFontSize: fontSize ?? 16,
             style: TextStyle(
-              color: context.theme.textColor,
+              color: inverted == null || !inverted!
+                  ? context.theme.textColor
+                  : context.theme.inverseTextColor,
               fontSize: fontSize ?? 16,
             ),
           );

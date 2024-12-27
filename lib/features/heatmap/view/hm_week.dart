@@ -6,13 +6,7 @@ class WeeklyHeatMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final weekDay = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     final theme = Theme.of(context);
-    final currentDate = DateTime(
-      DateTime.now().year,
-      DateTime.now().month,
-      DateTime.now().day,
-    );
     return GridView.builder(
       itemCount: 7,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -37,7 +31,7 @@ class WeeklyHeatMap extends StatelessWidget {
             borderRadius: defaultBorderRadius,
           ),
           child: PrimaryText(
-            text: weekDay[index],
+            text: weekdayLetters[index],
             inverted: value > 0,
           ),
         );

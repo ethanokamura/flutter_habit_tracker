@@ -23,6 +23,7 @@ class DefaultContainer extends StatelessWidget {
     return Material(
       color: context.theme.colorScheme.surface,
       borderRadius: defaultBorderRadius,
+      elevation: 10,
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: horizontal == null ? 15 : horizontal!,

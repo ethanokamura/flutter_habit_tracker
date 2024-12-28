@@ -1,1 +1,2 @@
-export 'view/view.dart';
+export 'edit_profile/edit_profile.dart';
+export 'profile/profile.dart';

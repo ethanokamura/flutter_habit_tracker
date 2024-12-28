@@ -4,7 +4,7 @@ import 'package:habit_tracker/features/habits/habit_page/view/habit_list.dart';
 import 'package:habit_tracker/features/habits/habit_page/view/habit_popup.dart';
 import 'package:habit_tracker/features/habits/habit_page/view/remove_habit_popup.dart';
 import 'package:habit_tracker/features/heatmap/heatmap.dart';
-import 'package:habit_tracker/features/profile/view/profile_popup.dart';
+import 'package:habit_tracker/features/profile/profile.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
 
 class HabitPageView extends StatefulWidget {

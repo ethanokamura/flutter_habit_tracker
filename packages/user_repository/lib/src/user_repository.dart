@@ -24,23 +24,6 @@ class UserRepository {
 
   /// Gets the initial user data emission
   Future<UserData> getOpeningUser() => Future.value(user);
-
-  /// Watches user data by UUID
-  Stream<UserData> watchUserById({required String uuid}) async* {
-    try {
-      yield* _supabase
-          .fromUsersTable()
-          .stream(primaryKey: [UserData.idConverter])
-          .eq(UserData.uuidConverter, uuid)
-          .map(
-            (event) => event.isNotEmpty
-                ? UserData.fromJson(event.first)
-                : UserData.empty,
-          );
-    } catch (e) {
-      throw UserFailure.fromStream();
-    }
-  }
 }
 
 /// Extension for Supabase client to handle auth changes
@@ -245,13 +228,12 @@ extension Update on UserRepository {
   /// Updates a specific field of the user profile
   Future<void> updateUser({
     required Map<String, dynamic> data,
-    required String uuid,
   }) async {
     try {
       if (user.id == null) return;
       await _supabase.fromUsersTable().update(data).eq(
             UserData.uuidConverter,
-            uuid,
+            user.id!,
           );
     } catch (e) {
       throw UserFailure.fromUpdate();

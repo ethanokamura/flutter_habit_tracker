@@ -12,7 +12,9 @@ extension CustomThemeData on ThemeData {
 
   /// [accentColor]
   /// Gives the signature look to the app
-  Color get accentColor => CustomColors.accent;
+  Color get accentColor => brightness == Brightness.dark
+      ? CustomColors.darkAccent
+      : CustomColors.lightAccent;
 
   /// [backgroundColor]
   /// Used for scaffolds
@@ -61,7 +63,9 @@ extension CustomThemeData on ThemeData {
 
   /// [heatMapColors]
   /// Used on for coloring the heatmap
-  List<Color> get heatMapColors => CustomColors.heatmapColors;
+  List<Color> get heatMapColors => brightness == Brightness.dark
+      ? CustomColors.darkHeatMapColors
+      : CustomColors.lightHeatMapColors;
 }
 
 // Dark Mode

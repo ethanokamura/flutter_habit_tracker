@@ -35,6 +35,9 @@ class MonthlyHeatMap extends StatelessWidget {
                     ? theme.colorScheme.primary
                     : theme.colorScheme.surface,
             borderRadius: defaultBorderRadius,
+            border: date == currentDate
+                ? Border.all(color: context.theme.textColor, width: 2)
+                : null,
           ),
           child: PrimaryText(
             text: (index + 1).toString(),

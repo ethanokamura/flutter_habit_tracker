@@ -219,6 +219,53 @@ class AppBarButton extends StatelessWidget {
 /// Requires [onTap] function to handle the tap event
 /// Optionally takes an [icon] and [text] for UI
 /// Optional padding using [horizontal] and [vertical]
+class ThemeButton extends StatelessWidget {
+  const ThemeButton({
+    required this.onTap,
+    this.icon,
+    this.text,
+    this.vertical,
+    this.horizontal,
+    super.key,
+  });
+
+  final IconData? icon;
+  final String? text;
+  final double? vertical;
+  final double? horizontal;
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 5,
+          vertical: 5,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (text != null)
+              ButtonText(
+                text: text!,
+                inverted: false,
+                staticSize: true,
+              ),
+            if (text != null && icon != null) const HorizontalSpacer(),
+            if (icon != null) defaultIconStyle(context, icon!),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Default button for the UI
+/// Requires [onTap] function to handle the tap event
+/// Optionally takes an [icon] and [text] for UI
+/// Optional padding using [horizontal] and [vertical]
 class HabitTileButton extends StatelessWidget {
   const HabitTileButton({
     required this.onTap,

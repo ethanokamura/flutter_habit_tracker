@@ -1,3 +1,4 @@
+import 'package:app_ui/src/constants.dart';
 import 'package:flutter/material.dart';
 
 extension BuildContextExtensions on BuildContext {
@@ -25,6 +26,7 @@ extension BuildContextExtensions on BuildContext {
       context: this,
       builder: builder,
       isScrollControlled: true,
+      shape: RoundedRectangleBorder(borderRadius: defaultBorderRadius),
     );
   }
 }

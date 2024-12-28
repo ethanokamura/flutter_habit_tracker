@@ -4,8 +4,8 @@
   "habits": "Current Habits",
   "today": "Today",
   "settingsPage": "App Settings",
-  "lightMode": "Light Mode",
-  "darkMode": "Dark Mode",
+  "lightMode": "Light",
+  "darkMode": "Dark",
   "checkProgress": "Check Progress",
   "editGoals": "Edit Goals",
   "selectMedia": "Select Media",
@@ -43,5 +43,8 @@
   "username": "username",
   "usernamePrompt": "username?",
   "invalidUsername": "invalid username",
-  "logOut": "logout"
+  "logOut": "logout",
+  "profilePage": "My Profile",
+  "editProfile": "Edit Profile",
+  "joined": "Joined"
 }

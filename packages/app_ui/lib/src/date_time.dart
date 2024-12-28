@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 const List<String> monthStrings = [
   'January',
   'February',
@@ -42,5 +44,15 @@ int getDaysInMonth(int year, int month) {
   return lastDayOfMonth.day;
 }
 
-String formatDateToString(DateTime date) =>
-    '${monthStrings[date.month - 1]} ${date.day}, ${date.year}';
+class DateFormatter {
+  static String formatTimestamp(DateTime dateTime) {
+    // Convert Timestamp to DateTime
+    // final dateTime = timestamp.toDate();
+
+    // Define the format
+    final dateFormat = DateFormat('MMMM dd, yyyy');
+
+    // Format the DateTime to a String
+    return dateFormat.format(dateTime);
+  }
+}

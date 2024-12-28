@@ -2,7 +2,7 @@ import 'package:app_core/app_core.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:habit_tracker/features/habits/habits.dart';
 import 'package:habit_tracker/features/home/view/bottom_nav.dart';
-import 'package:habit_tracker/features/settings/settings.dart';
+import 'package:habit_tracker/features/profile/profile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

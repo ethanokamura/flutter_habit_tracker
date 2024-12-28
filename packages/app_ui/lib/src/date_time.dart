@@ -14,6 +14,15 @@ const List<String> monthStrings = [
 ];
 
 const List<String> weekdayLetters = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+const List<String> weekdayString = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
 
 final currentDate = DateTime(
   DateTime.now().year,
@@ -32,3 +41,6 @@ int getDaysInMonth(int year, int month) {
   // Return the day of the month, which represents the number of days in the month
   return lastDayOfMonth.day;
 }
+
+String formatDateToString(DateTime date) =>
+    '${monthStrings[date.month - 1]} ${date.day}, ${date.year}';

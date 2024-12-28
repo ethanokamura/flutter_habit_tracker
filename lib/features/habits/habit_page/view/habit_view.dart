@@ -52,11 +52,20 @@ class _HabitPageViewState extends State<HabitPageView> {
       ),
       body: ListView(
         children: [
-          VerticalSpacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TitleText(text: '${context.l10n.today}:'),
+              TitleText(text: formatDateToString(DateTime.now())),
+            ],
+          ),
+          const VerticalSpacer(),
           SizedBox(
-            height: 100,
+            height: 60,
             child: WeekView(habits: widget.habitCubit.state.habits),
           ),
+          const VerticalSpacer(),
+          TitleText(text: '${context.l10n.habits}:'),
           HabitList(
             habits: widget.habitCubit.state.habits,
             onChanged: (value, id) async =>

@@ -1,6 +1,8 @@
 {
   "@@locale": "en",
   "appTitle": "Habit Tracker",
+  "habits": "Current Habits",
+  "today": "Today",
   "settingsPage": "App Settings",
   "lightMode": "Light Mode",
   "darkMode": "Dark Mode",

@@ -27,7 +27,6 @@ class StreakWidget extends StatelessWidget {
           }
           context.read<HabitHeatMapCubit>().updateHabits(habits);
           final streak = calculateCurrentStreak(state.dataset);
-          print(streak);
           return _streakContainer(context, streak);
         },
       ),

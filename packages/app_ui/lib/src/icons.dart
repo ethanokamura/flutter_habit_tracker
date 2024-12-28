@@ -83,5 +83,6 @@ class AppIcons {
   static const IconData create = FontAwesomeIcons.plus;
   static const IconData inbox = FontAwesomeIcons.inbox;
   static const IconData user = FontAwesomeIcons.solidUser;
+  static const IconData circleUser = FontAwesomeIcons.solidCircleUser;
   static const IconData month = FontAwesomeIcons.solidCalendarDays;
 }

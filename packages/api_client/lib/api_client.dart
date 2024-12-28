@@ -5,3 +5,4 @@ export 'src/api_client.dart';
 export 'package:isar/isar.dart';
 export 'package:path_provider/path_provider.dart';
 export 'package:isar_flutter_libs/isar_flutter_libs.dart';
+export 'package:supabase_flutter/supabase_flutter.dart';

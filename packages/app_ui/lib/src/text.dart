@@ -78,6 +78,51 @@ class TitleText extends StatelessWidget {
   }
 }
 
+class HabitText extends StatelessWidget {
+  const HabitText({
+    required this.text,
+    required this.completed,
+    this.maxLines,
+    this.fontSize,
+    this.staticSize,
+    super.key,
+  });
+  final String text;
+  final bool completed;
+  final int? maxLines;
+  final double? fontSize;
+  final bool? staticSize;
+  @override
+  Widget build(BuildContext context) {
+    return staticSize != null && staticSize!
+        ? Text(
+            text,
+            overflow: TextOverflow.ellipsis,
+            maxLines: maxLines ?? 1,
+            style: TextStyle(
+              color: completed
+                  ? context.theme.inverseTextColor
+                  : context.theme.textColor,
+              fontSize: fontSize ?? 20,
+              fontWeight: FontWeight.bold,
+            ),
+          )
+        : AutoSizeText(
+            text,
+            overflow: TextOverflow.ellipsis,
+            maxLines: maxLines ?? 1,
+            maxFontSize: fontSize ?? 20,
+            style: TextStyle(
+              color: completed
+                  ? context.theme.inverseTextColor
+                  : context.theme.textColor,
+              fontSize: fontSize ?? 20,
+              fontWeight: FontWeight.bold,
+            ),
+          );
+  }
+}
+
 class PrimaryText extends StatelessWidget {
   const PrimaryText({
     required this.text,

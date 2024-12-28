@@ -1,37 +1,19 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:habit_tracker/features/habits/cubit/habit_cubit.dart';
 import 'package:habit_tracker/features/habits/habit_page/view/habit_list.dart';
-import 'package:habit_tracker/features/habits/habit_page/view/habit_popup.dart';
+import 'package:habit_tracker/features/habits/habit_page/view/edit_habit.dart';
 import 'package:habit_tracker/features/habits/habit_page/view/remove_habit_popup.dart';
 import 'package:habit_tracker/features/heatmap/heatmap.dart';
-import 'package:habit_tracker/features/heatmap/streak/view/streak_widget.dart';
+import 'package:habit_tracker/features/heatmap/streak/streak.dart';
 import 'package:habit_tracker/features/profile/profile.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
 
-class HabitPageView extends StatefulWidget {
+class HabitPageView extends StatelessWidget {
   const HabitPageView({required this.habitCubit, super.key});
   final HabitCubit habitCubit;
   @override
-  State<HabitPageView> createState() => _HabitPageViewState();
-}
-
-class _HabitPageViewState extends State<HabitPageView> {
-  final _habitTextController = TextEditingController();
-
-  // cancel new habit
-  void cancelDialogBox() {
-    _habitTextController.clear();
-    Navigator.of(context, rootNavigator: true).pop();
-  }
-
-  @override
-  void dispose() {
-    _habitTextController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    void handleExit() => Navigator.of(context, rootNavigator: true).pop();
     return CustomPageView(
       title: DateFormatter.formatTimestamp(DateTime.now()),
       centerTitle: false,
@@ -46,14 +28,8 @@ class _HabitPageViewState extends State<HabitPageView> {
           context: context,
           builder: (context) {
             return EditHabitBox(
-              controller: _habitTextController,
-              onSave: () async {
-                await widget.habitCubit
-                    .saveNewHabit(name: _habitTextController.text.trim());
-                if (!context.mounted) return;
-                Navigator.of(context, rootNavigator: true).pop();
-              },
-              onCancel: cancelDialogBox,
+              onSave: (value) async => habitCubit.saveNewHabit(name: value),
+              onCancel: handleExit,
             );
           },
         ),
@@ -63,30 +39,23 @@ class _HabitPageViewState extends State<HabitPageView> {
         children: [
           SizedBox(
             height: 60,
-            child: WeekView(habits: widget.habitCubit.state.habits),
+            child: WeekView(habits: habitCubit.state.habits),
           ),
-          StreakWidget(habits: widget.habitCubit.state.habits),
+          StreakWidget(habits: habitCubit.state.habits),
           const VerticalSpacer(),
           TitleText(text: '${context.l10n.habits}:'),
           const VerticalSpacer(),
           HabitList(
-            habits: widget.habitCubit.state.habits,
+            habits: habitCubit.state.habits,
             onChanged: (value, id) async =>
-                widget.habitCubit.toggleCompletion(id: id!),
+                habitCubit.toggleCompletion(id: id!),
             onEdit: (id) async => showDialog(
               context: context,
               builder: (context) {
                 return EditHabitBox(
-                  controller: _habitTextController,
-                  onSave: () async {
-                    await widget.habitCubit.updateExistingHabit(
-                      id: id!,
-                      name: _habitTextController.text.trim(),
-                    );
-                    if (!context.mounted) return;
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                  onCancel: cancelDialogBox,
+                  onSave: (value) async =>
+                      habitCubit.updateExistingHabit(id: id!, name: value),
+                  onCancel: handleExit,
                 );
               },
             ),
@@ -95,12 +64,10 @@ class _HabitPageViewState extends State<HabitPageView> {
               builder: (context) {
                 return RemoveHabitPopup(
                   onDelete: () async {
-                    await widget.habitCubit.removeHabit(id: id!);
-                    if (!context.mounted) return;
-                    Navigator.of(context, rootNavigator: true).pop();
+                    await habitCubit.removeHabit(id: id!);
+                    handleExit();
                   },
-                  onCancel: () =>
-                      Navigator.of(context, rootNavigator: true).pop(),
+                  onCancel: handleExit,
                 );
               },
             ),

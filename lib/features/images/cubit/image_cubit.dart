@@ -67,14 +67,10 @@ class ImageCubit extends Cubit<ImageState> {
       await pickImage(source: source, aspectX: aspectX, aspectY: aspectY);
       final path = '$userId/image_$docId.jpeg';
       // upload image
-      try {
-        final uploadUrl = state.photoUrl == null || state.photoUrl!.isEmpty
-            ? await uploadImage(collection: collection, path: path)
-            : await updateImage(collection: collection, path: path);
-        emit(state.fromLoadedUrl(uploadUrl));
-      } catch (e) {
-        print(e);
-      }
+      final uploadUrl = state.photoUrl == null || state.photoUrl!.isEmpty
+          ? await uploadImage(collection: collection, path: path)
+          : await updateImage(collection: collection, path: path);
+      emit(state.fromLoadedUrl(uploadUrl));
     } catch (e) {
       emit(state.fromFailure('Failed to pick image'));
     }

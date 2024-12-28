@@ -1,0 +1,64 @@
+import 'package:app_core/app_core.dart';
+import 'package:app_ui/app_ui.dart';
+import 'package:habit_tracker/features/images/cubit/image_cubit.dart';
+import 'package:habit_tracker/features/images/view/helpers.dart';
+import 'package:habit_tracker/features/images/view/image.dart';
+import 'package:habit_tracker/features/images/view/image_modal.dart';
+
+class EditProfileImage extends StatelessWidget {
+  const EditProfileImage({
+    required this.width,
+    required this.userId,
+    required this.photoUrl,
+    required this.onFileChanged,
+    required this.aspectX,
+    required this.aspectY,
+    super.key,
+  });
+
+  final String? photoUrl;
+  final String userId;
+  final double width;
+  final double aspectX;
+  final double aspectY;
+  final void Function(String url) onFileChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => ImageCubit()..loadImage(photoUrl),
+      child: BlocBuilder<ImageCubit, ImageState>(
+        builder: (context, state) {
+          if (state.isLoading) {
+            return loadingWidget(
+              context: context,
+              aspectX: aspectX,
+              aspectY: aspectY,
+            );
+          }
+          return GestureDetector(
+            onTap: () async => showImagePicker(
+              context: context,
+              onSelected: (source) async {
+                await context.read<ImageCubit>().pickUserImage(
+                      userId: userId,
+                      source: source,
+                      aspectX: aspectX,
+                      aspectY: aspectY,
+                    );
+                onFileChanged(state.photoUrl!);
+              },
+            ),
+            child: ImageWidget(
+              width: width,
+              photoUrl: state.photoUrl,
+              borderRadius: defaultBorderRadius,
+              aspectX: aspectX,
+              aspectY: aspectY,
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

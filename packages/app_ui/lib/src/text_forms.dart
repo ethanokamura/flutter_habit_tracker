@@ -42,6 +42,7 @@ TextFormField customTextFormField({
       minLines: 1,
       maxLines: 5,
       maxLength: maxLength,
+      textAlign: TextAlign.center,
       style: const TextStyle(fontSize: 22),
       decoration: defaultTextFormFieldDecoration(
         context: context,

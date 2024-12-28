@@ -65,6 +65,8 @@ class AppIcons {
   static const IconData edit = FontAwesomeIcons.pencil;
   static const IconData next = FontAwesomeIcons.arrowRight;
   static const IconData back = FontAwesomeIcons.arrowLeft;
+  static const IconData images = FontAwesomeIcons.images;
+  static const IconData camera = FontAwesomeIcons.camera;
 
   // toggles
   static const IconData checked = FontAwesomeIcons.solidSquareCheck;

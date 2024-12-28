@@ -12,11 +12,16 @@ dependencies:
   # app_core:
   #   path: ../app_core
   auto_size_text: ^3.0.0
+  cached_network_image: ^3.0.0-nullsafety
   flutter:
     sdk: flutter
+  flutter_image_compress: ^2.3.0
   flutter_slidable: ^3.1.2
   font_awesome_flutter: ^10.7.0
   google_fonts: ^6.2.1
+  image: ^4.2.0
+  image_cropper: ^8.0.2
+  image_picker: ^1.1.2
 
 dev_dependencies:
   very_good_analysis: ^6.0.0

@@ -1,3 +1,4 @@
+export 'bottom_modal.dart';
 export 'buttons.dart';
 export 'button_styles.dart';
 export 'colors.dart';

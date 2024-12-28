@@ -162,6 +162,38 @@ class CheckBox extends StatelessWidget {
   }
 }
 
+/// Button for bottom modals
+/// Requires [onTap] function to handle the tap event
+/// Requires an [icon] and [label] for UI
+class BottomModalButton extends StatelessWidget {
+  const BottomModalButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    super.key,
+  });
+  final IconData icon;
+  final String label;
+  final void Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          onPressed: onTap,
+          style: bottomModalStyle(context),
+          icon: inverseIconStyle(context, icon, size: 40),
+        ),
+        const VerticalSpacer(),
+        PrimaryText(text: label),
+      ],
+    );
+  }
+}
+
 /// Icon button for the app bar
 /// Requires [onTap] function to handle the tap event
 /// Requires an [icon] for UI

@@ -4,15 +4,24 @@ import 'package:flutter/material.dart';
 // defines custom colors for the app
 abstract class CustomColors {
   // universal accent
-  static const Color accent = Color(0xffb6a9f1);
+  static const Color lightAccent = Color(0xff99dddb);
+  static const Color darkAccent = Color(0xff38aba8);
 
   // coloring colors:
-  static const List<Color> heatmapColors = [
-    Color(0xffc7bdf2),
-    Color(0xffbfb3f2),
-    Color(0xffb6a9f1),
-    Color(0xffa89be0),
-    Color(0xff9d8ede),
+  static const List<Color> lightHeatMapColors = [
+    Color(0xffbee9e8),
+    Color(0xff99dddb),
+    Color(0xff74d1ce),
+    Color(0xff50c5c2),
+    Color(0xff38aba8),
+  ];
+
+  static const List<Color> darkHeatMapColors = [
+    Color(0xff74d1ce),
+    Color(0xff50c5c2),
+    Color(0xff38aba8),
+    Color(0xff2c8784),
+    Color(0xff206260),
   ];
 
   // dark mode

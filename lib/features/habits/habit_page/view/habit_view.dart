@@ -33,7 +33,7 @@ class _HabitPageViewState extends State<HabitPageView> {
   @override
   Widget build(BuildContext context) {
     return CustomPageView(
-      title: context.l10n.appTitle,
+      title: DateFormatter.formatTimestamp(DateTime.now()),
       centerTitle: false,
       actions: [
         AppBarButton(
@@ -61,14 +61,6 @@ class _HabitPageViewState extends State<HabitPageView> {
       ),
       body: ListView(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TitleText(text: '${context.l10n.today}:'),
-              TitleText(text: DateFormatter.formatTimestamp(DateTime.now())),
-            ],
-          ),
-          const VerticalSpacer(),
           SizedBox(
             height: 60,
             child: WeekView(habits: widget.habitCubit.state.habits),

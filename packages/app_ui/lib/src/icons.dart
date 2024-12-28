@@ -35,14 +35,6 @@ Icon inverseIconStyle(BuildContext context, IconData icon, {double size = 14}) {
   );
 }
 
-Icon surfaceIconStyle(BuildContext context, IconData icon, {double size = 14}) {
-  return Icon(
-    icon,
-    color: context.theme.textColor,
-    size: size,
-  );
-}
-
 Icon selectionIconStyle(
   BuildContext context,
   IconData icon, {
@@ -58,6 +50,7 @@ Icon selectionIconStyle(
 class AppIcons {
   // buttons
   static const IconData settings = FontAwesomeIcons.gear;
+  static const IconData confirm = FontAwesomeIcons.check;
   static const IconData share = FontAwesomeIcons.share;
   static const IconData cancel = FontAwesomeIcons.xmark;
   static const IconData more = FontAwesomeIcons.ellipsis;

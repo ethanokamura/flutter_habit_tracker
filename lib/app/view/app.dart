@@ -3,7 +3,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:habit_repository/habit_repository.dart';
 import 'package:habit_tracker/app/cubit/app_cubit.dart';
 import 'package:habit_tracker/features/authentication/authentication.dart';
-import 'package:habit_tracker/features/home/home.dart';
+import 'package:habit_tracker/features/habits/habits.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
 import 'package:habit_tracker/theme/theme_cubit.dart';
 import 'package:user_repository/user_repository.dart';
@@ -13,12 +13,11 @@ List<Page<dynamic>> onGenerateAppPages(
   AppStatus status,
   List<Page<dynamic>> pages,
 ) {
-  print('App status: $status');
   if (status.isUnauthenticated) {
     return [LoginPage.page()];
   }
   if (status.isNewlyAuthenticated) {
-    return [HomePage.page()];
+    return [HabitPage.page()];
   }
   if (status.needsUsername) {
     return [CreateUserPage.page()];

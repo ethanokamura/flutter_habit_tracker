@@ -9,15 +9,12 @@ class ProfileCubit extends Cubit<ProfileState> {
   /// Requires a [UserRepository] and [TagRepository] to handle data operations.
   ProfileCubit({
     required UserRepository userRepository,
-    required String userId,
   })  : _userRepository = userRepository,
-        _userID = userId,
         super(ProfileState.loading()) {
     _watchUser();
   }
 
   final UserRepository _userRepository;
-  final String _userID;
 
   /// Stops listening to the current user
   @override
@@ -30,11 +27,10 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   /// Listens to the current user by their ID
   void _watchUser() {
-    _userSubscription =
-        _userRepository.watchUserById(uuid: _userID).handleFailure().listen(
-              (user) => emit(ProfileState.success(user)),
-              onError: (e) => emit(ProfileState.failure()),
-            );
+    _userSubscription = _userRepository.watchUser.handleFailure().listen(
+          (user) => emit(ProfileState.success(user)),
+          onError: (e) => emit(ProfileState.failure()),
+        );
   }
 
   /// Private helper funciton to cancel the user subscription
@@ -47,5 +43,5 @@ class ProfileCubit extends Cubit<ProfileState> {
       _userRepository.updateUserField(field: field, data: data);
 
   Future<void> saveChanges(Map<String, dynamic> data) async =>
-      _userRepository.updateUser(data: data, uuid: _userID);
+      _userRepository.updateUser(data: data);
 }

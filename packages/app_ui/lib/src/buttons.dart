@@ -7,6 +7,7 @@ import 'package:app_ui/app_ui.dart';
 class DefaultButton extends StatelessWidget {
   const DefaultButton({
     required this.onTap,
+    this.onSurface = false,
     this.icon,
     this.text,
     this.vertical,
@@ -14,6 +15,7 @@ class DefaultButton extends StatelessWidget {
     super.key,
   });
 
+  final bool onSurface;
   final IconData? icon;
   final String? text;
   final double? vertical;
@@ -24,7 +26,7 @@ class DefaultButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onTap,
-      style: defaultStyle(context),
+      style: defaultStyle(context, onSurface: onSurface),
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: horizontal ?? 0,
@@ -34,54 +36,6 @@ class DefaultButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (icon != null) defaultIconStyle(context, icon!),
-            if (text != null && icon != null) const SizedBox(width: 10),
-            if (text != null)
-              ButtonText(
-                text: text!,
-                inverted: false,
-                staticSize: true,
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Default button for the UI
-/// Requires [onTap] function to handle the tap event
-/// Optionally takes an [icon] and [text] for UI
-/// Optional padding using [horizontal] and [vertical]
-class SurfaceButton extends StatelessWidget {
-  const SurfaceButton({
-    required this.onTap,
-    this.icon,
-    this.text,
-    this.vertical,
-    this.horizontal,
-    super.key,
-  });
-
-  final IconData? icon;
-  final String? text;
-  final double? vertical;
-  final double? horizontal;
-  final void Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onTap,
-      style: defaultStyle(context, onSurface: true),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: horizontal ?? 0,
-          vertical: vertical ?? 0,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (icon != null) surfaceIconStyle(context, icon!),
             if (text != null && icon != null) const SizedBox(width: 10),
             if (text != null)
               ButtonText(
@@ -184,8 +138,8 @@ class BottomModalButton extends StatelessWidget {
       children: [
         IconButton(
           onPressed: onTap,
-          style: bottomModalStyle(context),
-          icon: inverseIconStyle(context, icon, size: 40),
+          style: defaultStyle(context, onSurface: true),
+          icon: defaultIconStyle(context, icon, size: 30),
         ),
         const VerticalSpacer(),
         PrimaryText(text: label),
@@ -297,11 +251,15 @@ class HabitTileButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            if (icon != null) appBarIconStyle(context, icon!),
+            if (icon != null)
+              completed
+                  ? inverseIconStyle(context, icon!, size: 18)
+                  : defaultIconStyle(context, icon!, size: 18),
             if (text != null && icon != null) const SizedBox(width: 10),
             if (text != null)
-              TitleText(
+              HabitText(
                 text: text!,
+                completed: completed,
                 staticSize: true,
               ),
           ],

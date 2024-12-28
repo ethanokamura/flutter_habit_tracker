@@ -5,18 +5,23 @@ import 'package:habit_tracker/features/habits/cubit/habit_cubit.dart';
 import 'package:habit_tracker/features/habits/habit_page/view/habit_view.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
 
-class HabitPage extends StatelessWidget {
+class HabitPage extends StatefulWidget {
   const HabitPage({super.key});
 
-  static MaterialPage<void> page() =>
-      const MaterialPage<void>(child: HabitPage());
+  static MaterialPage<void> page() => MaterialPage<void>(child: HabitPage());
 
   @override
+  State<HabitPage> createState() => _HabitPageState();
+}
+
+class _HabitPageState extends State<HabitPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocProvider(
-      create: (_) => HabitCubit(
-        habitRepository: context.read<HabitRepository>(),
-      ),
+      create: (_) =>
+          HabitCubit(habitRepository: context.read<HabitRepository>()),
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
           if (state.isLoading) {
@@ -33,6 +38,9 @@ class HabitPage extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 Widget _loadingWidget() => const Center(child: CircularProgressIndicator());

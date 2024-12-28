@@ -17,11 +17,11 @@ abstract class CustomColors {
   ];
 
   static const List<Color> darkHeatMapColors = [
-    Color(0xff74d1ce),
-    Color(0xff50c5c2),
-    Color(0xff38aba8),
-    Color(0xff2c8784),
     Color(0xff206260),
+    Color(0xff2c8784),
+    Color(0xff38aba8),
+    Color(0xff50c5c2),
+    Color(0xff74d1ce),
   ];
 
   // dark mode

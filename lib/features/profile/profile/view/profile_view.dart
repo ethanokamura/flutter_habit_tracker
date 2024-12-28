@@ -71,7 +71,7 @@ class _ProfileViewState extends State<ProfileView> {
           ),
           DefaultButton(
             onSurface: true,
-            text: context.l10n.checkProgress,
+            text: context.l10n.habitHistory,
             onTap: () => Navigator.push(
               context,
               bottomSlideTransition(const HabitHistoryPage()),
@@ -79,7 +79,7 @@ class _ProfileViewState extends State<ProfileView> {
           ),
           DefaultButton(
             onSurface: true,
-            text: context.l10n.editGoals,
+            text: context.l10n.checkProgress,
             onTap: () {},
           ),
         ],

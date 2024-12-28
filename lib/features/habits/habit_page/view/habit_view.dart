@@ -4,6 +4,7 @@ import 'package:habit_tracker/features/habits/habit_page/view/habit_list.dart';
 import 'package:habit_tracker/features/habits/habit_page/view/habit_popup.dart';
 import 'package:habit_tracker/features/habits/habit_page/view/remove_habit_popup.dart';
 import 'package:habit_tracker/features/heatmap/heatmap.dart';
+import 'package:habit_tracker/features/heatmap/streak/view/streak_widget.dart';
 import 'package:habit_tracker/features/profile/profile.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
 
@@ -72,8 +73,10 @@ class _HabitPageViewState extends State<HabitPageView> {
             height: 60,
             child: WeekView(habits: widget.habitCubit.state.habits),
           ),
+          StreakWidget(habits: widget.habitCubit.state.habits),
           const VerticalSpacer(),
           TitleText(text: '${context.l10n.habits}:'),
+          const VerticalSpacer(),
           HabitList(
             habits: widget.habitCubit.state.habits,
             onChanged: (value, id) async =>

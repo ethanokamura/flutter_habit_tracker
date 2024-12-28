@@ -50,5 +50,7 @@
   "joined": "Joined",
   "invalid": "invalid",
   "unableToSave": "unable to save data",
-  "habitProgressMap": "Habit Map"
+  "habitProgressMap": "Habit Map",
+  "habitHistory": "Habit History",
+  "streak": "You have a {streak} day streak 🔥"
 }

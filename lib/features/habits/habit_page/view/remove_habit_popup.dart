@@ -18,7 +18,11 @@ class RemoveHabitPopup extends StatelessWidget {
       actions: [
         SizedBox(
           width: 100,
-          child: SurfaceButton(text: context.l10n.cancel, onTap: onCancel),
+          child: DefaultButton(
+            onSurface: true,
+            text: context.l10n.cancel,
+            onTap: onCancel,
+          ),
         ),
         SizedBox(
           width: 100,

@@ -110,4 +110,15 @@ class HabitCubit extends Cubit<HabitState> {
       emit(state.fromFailure(failure));
     }
   }
+
+  Future<void> getLaunchDate() async {
+    emit(state.fromLoading());
+    try {
+      var launchDate = await _habitRepository.getFirstLaunchDate();
+      launchDate ??= DateTime.now();
+      emit(state.fromLaunchLoaded(launchDate: launchDate));
+    } on HabitFailure catch (failure) {
+      emit(state.fromFailure(failure));
+    }
+  }
 }

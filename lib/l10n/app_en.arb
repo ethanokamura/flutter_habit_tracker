@@ -49,5 +49,6 @@
   "fromGetUser": "failure to get user info",
   "joined": "Joined",
   "invalid": "invalid",
-  "unableToSave": "unable to save data"
+  "unableToSave": "unable to save data",
+  "habitProgressMap": "Habit Map"
 }

@@ -23,7 +23,7 @@ class _HabitHistoryPageState extends State<HabitHistoryPage>
     return BlocProvider(
       create: (_) => HabitCubit(
         habitRepository: context.read<HabitRepository>(),
-      ),
+      )..getLaunchDate(),
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
           if (state.isLoading) {

@@ -1,5 +1,6 @@
 import 'package:app_core/app_core.dart';
 import 'package:app_ui/app_ui.dart';
+import 'package:habit_tracker/features/habits/habits.dart';
 import 'package:habit_tracker/features/profile/cubit/profile_cubit.dart';
 import 'package:habit_tracker/features/profile/profile.dart';
 import 'package:habit_tracker/features/profile/profile/view/profile_header.dart';
@@ -71,7 +72,10 @@ class _ProfileViewState extends State<ProfileView> {
           DefaultButton(
             onSurface: true,
             text: context.l10n.checkProgress,
-            onTap: () {},
+            onTap: () => Navigator.push(
+              context,
+              bottomSlideTransition(const HabitHistoryPage()),
+            ),
           ),
           DefaultButton(
             onSurface: true,

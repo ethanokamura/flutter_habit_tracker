@@ -1,8 +1,7 @@
-import 'package:app_core/app_core.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:habit_tracker/features/habits/cubit/habit_cubit.dart';
-import 'package:habit_tracker/features/habits/habit_history/cubit/calendar_cubit.dart';
 import 'package:habit_tracker/features/heatmap/heatmap.dart';
+import 'package:habit_tracker/l10n/l10n.dart';
 
 class HabitHistory extends StatelessWidget {
   const HabitHistory({required this.habitCubit, super.key});
@@ -11,44 +10,64 @@ class HabitHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CalendarCubit(),
-      child: BlocBuilder<CalendarCubit, CalendarState>(
-        builder: (context, state) {
-          return CustomPageView(
-            title: '${monthStrings[state.month - 1]} ${state.year}',
-            actions: [],
-            body: Column(
-              children: [
-                SizedBox(
-                  height: 300,
-                  child: MonthView(
-                    habits: habitCubit.state.habits,
-                    year: state.year,
-                    month: state.month,
-                  ),
+    final launchDate = habitCubit.state.launchDate!;
+    final months = monthsBetween(launchDate) + 1;
+    return CustomPageView(
+      title: context.l10n.habitProgressMap,
+      body: ListView.separated(
+        separatorBuilder: (context, index) => const VerticalSpacer(),
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemCount: months + 1,
+        itemBuilder: (context, index) {
+          final indexedDate = getIndexedDate(launchDate, index);
+          return Column(
+            children: [
+              TitleText(
+                text: '${indexedDate['monthName']} ${indexedDate['year']}',
+              ),
+              const VerticalSpacer(),
+              SizedBox(
+                height: 300,
+                child: MonthView(
+                  habits: habitCubit.state.habits,
+                  year: indexedDate['year'],
+                  month: indexedDate['month'],
                 ),
-                const VerticalSpacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    DefaultButton(
-                      icon: AppIcons.back,
-                      onTap: () =>
-                          context.read<CalendarCubit>().goToPreviousMonth(),
-                    ),
-                    DefaultButton(
-                      icon: AppIcons.next,
-                      onTap: () =>
-                          context.read<CalendarCubit>().goToNextMonth(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           );
         },
       ),
     );
   }
+}
+
+int monthsBetween(DateTime startDate) {
+  var currentDate = DateTime.now();
+  // Ensure startDate is earlier than endDate
+  if (startDate.isAfter(currentDate)) {
+    final temp = startDate;
+    startDate = currentDate;
+    currentDate = temp;
+  }
+
+  // Calculate the difference in years and months
+  final yearDiff = currentDate.year - startDate.year;
+  final monthDiff = currentDate.month - startDate.month;
+
+  // Total months difference
+  return yearDiff * 12 + monthDiff;
+}
+
+Map<String, dynamic> getIndexedDate(DateTime launchDate, int index) {
+  final year = launchDate.year + ((launchDate.month - 1 + index) ~/ 12);
+  final month = (launchDate.month - 1 + index) % 12 + 1;
+
+  final monthName = monthStrings[month - 1];
+
+  return {
+    'year': year,
+    'month': month,
+    'monthName': monthName,
+  };
 }

@@ -16,6 +16,7 @@ final class HabitState extends Equatable {
     this.habits = const [],
     this.completed = false,
     this.failure = HabitFailure.empty,
+    this.launchDate,
   });
 
   /// Creates an initial [HabitState].
@@ -23,6 +24,7 @@ final class HabitState extends Equatable {
 
   final HabitStatus status;
   final List<Habit> habits;
+  final DateTime? launchDate;
   final bool completed;
   final HabitFailure failure;
 
@@ -32,6 +34,7 @@ final class HabitState extends Equatable {
         status,
         habits,
         completed,
+        launchDate,
         failure,
       ];
 
@@ -41,11 +44,13 @@ final class HabitState extends Equatable {
     HabitStatus? status,
     List<Habit>? habits,
     bool? completed,
+    DateTime? launchDate,
     HabitFailure? failure,
   }) {
     return HabitState._(
       status: status ?? this.status,
       habits: habits ?? this.habits,
+      launchDate: launchDate ?? this.launchDate,
       completed: completed ?? this.completed,
       failure: failure ?? this.failure,
     );
@@ -71,6 +76,11 @@ extension _HabitStateExtensions on HabitState {
   HabitState fromHabitsLoaded({required List<Habit> habits}) => copyWith(
         status: HabitStatus.loaded,
         habits: habits,
+      );
+
+  HabitState fromLaunchLoaded({required DateTime launchDate}) => copyWith(
+        status: HabitStatus.loaded,
+        launchDate: launchDate,
       );
 
   HabitState fromFailure(HabitFailure failure) => copyWith(

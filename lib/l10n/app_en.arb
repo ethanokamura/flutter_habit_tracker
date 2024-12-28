@@ -10,7 +10,7 @@
   "editGoals": "Edit Goals",
   "selectMedia": "Select Media",
   "camera": "Camera",
-  "library": "Photo Library",
+  "library": "Library",
   "editHabitName": "What's this habit?",
   "cancel": "Cancel",
   "save": "Save",
@@ -46,5 +46,8 @@
   "logOut": "logout",
   "profilePage": "My Profile",
   "editProfile": "Edit Profile",
-  "joined": "Joined"
+  "fromGetUser": "failure to get user info",
+  "joined": "Joined",
+  "invalid": "invalid",
+  "unableToSave": "unable to save data"
 }

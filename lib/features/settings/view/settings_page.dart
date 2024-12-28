@@ -35,8 +35,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 });
               },
             ),
-            // DefaultButton(onTap: () {}),
-            // DefaultButton(onTap: () {}),
+            DefaultButton(text: context.l10n.checkProgress, onTap: () {}),
+            DefaultButton(text: context.l10n.editGoals, onTap: () {}),
           ],
         ),
       ),

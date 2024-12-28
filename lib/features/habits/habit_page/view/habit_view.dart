@@ -4,6 +4,7 @@ import 'package:habit_tracker/features/habits/habit_page/view/habit_list.dart';
 import 'package:habit_tracker/features/habits/habit_page/view/habit_popup.dart';
 import 'package:habit_tracker/features/habits/habit_page/view/remove_habit_popup.dart';
 import 'package:habit_tracker/features/heatmap/heatmap.dart';
+import 'package:habit_tracker/features/profile/view/profile_popup.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
 
 class HabitPageView extends StatefulWidget {
@@ -32,6 +33,13 @@ class _HabitPageViewState extends State<HabitPageView> {
   Widget build(BuildContext context) {
     return CustomPageView(
       title: context.l10n.appTitle,
+      centerTitle: false,
+      actions: [
+        AppBarButton(
+          icon: AppIcons.circleUser,
+          onTap: () async => profilePopUp(context),
+        )
+      ],
       floatingActionButton: FloatingActionButton(
         onPressed: () async => showDialog(
           context: context,
@@ -56,7 +64,7 @@ class _HabitPageViewState extends State<HabitPageView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TitleText(text: '${context.l10n.today}:'),
-              TitleText(text: formatDateToString(DateTime.now())),
+              TitleText(text: DateFormatter.formatTimestamp(DateTime.now())),
             ],
           ),
           const VerticalSpacer(),

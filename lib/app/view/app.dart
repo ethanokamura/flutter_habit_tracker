@@ -2,37 +2,46 @@ import 'package:app_core/app_core.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:habit_repository/habit_repository.dart';
 import 'package:habit_tracker/app/cubit/app_cubit.dart';
-import 'package:habit_tracker/features/empty_page.dart';
-import 'package:habit_tracker/features/error_page.dart';
+import 'package:habit_tracker/features/authentication/authentication.dart';
 import 'package:habit_tracker/features/home/home.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
 import 'package:habit_tracker/theme/theme_cubit.dart';
+import 'package:user_repository/user_repository.dart';
 
 /// Generate pages based on AppStatus
 List<Page<dynamic>> onGenerateAppPages(
   AppStatus status,
   List<Page<dynamic>> pages,
 ) {
-  if (status.isLoaded) {
+  print('App status: $status');
+  if (status.isUnauthenticated) {
+    return [LoginPage.page()];
+  }
+  if (status.isNewlyAuthenticated) {
     return [HomePage.page()];
   }
-  if (status.isEmpty) {
-    return [EmptyPage.page()];
-  }
-  if (status.isFailure) {
-    return [ErrorPage.page()];
+  if (status.needsUsername) {
+    return [CreateUserPage.page()];
   }
   return pages;
 }
 
 class App extends StatelessWidget {
-  const App({required this.habitRepository, super.key});
+  const App({
+    required this.userRepository,
+    required this.habitRepository,
+    super.key,
+  });
+  final UserRepository userRepository;
   final HabitRepository habitRepository;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<UserRepository>.value(
+          value: userRepository,
+        ),
         RepositoryProvider<HabitRepository>.value(
           value: habitRepository,
         ),
@@ -43,7 +52,7 @@ class App extends StatelessWidget {
         providers: [
           BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
           BlocProvider<AppCubit>(
-            create: (_) => AppCubit(habitRepository: habitRepository),
+            create: (_) => AppCubit(userRepository: userRepository),
           ),
         ],
 
@@ -76,7 +85,11 @@ class AppView extends StatelessWidget {
             listenWhen: (_, current) => current.isFailure,
             listener: (context, state) {
               return switch (state.failure) {
-                _ => context.showSnackBar(context.l10n.failureToLoad),
+                AuthChangesFailure() =>
+                  context.showSnackBar(context.l10n.authFailure),
+                SignOutFailure() =>
+                  context.showSnackBar(context.l10n.authFailure),
+                _ => context.showSnackBar(context.l10n.unknownFailure),
               };
             },
             child: FlowBuilder(

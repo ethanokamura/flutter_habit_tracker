@@ -26,7 +26,6 @@ class ProfileHeader extends StatelessWidget {
               bold: true,
               fontSize: 24,
             ),
-            if (user.displayName.isNotEmpty) TitleText(text: user.displayName),
             SecondaryText(
               text: '${context.l10n.joined}: ${DateFormatter.formatTimestamp(
                 user.createdAt!,

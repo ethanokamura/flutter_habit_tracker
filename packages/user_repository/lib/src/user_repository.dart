@@ -2,7 +2,6 @@ import 'package:api_client/api_client.dart';
 import 'package:app_core/app_core.dart';
 import 'package:user_repository/src/failures.dart';
 import 'package:user_repository/src/models/user.dart';
-import 'package:user_repository/src/models/user_profile.dart';
 
 /// Repository class for managing user-related operations
 class UserRepository {
@@ -38,7 +37,7 @@ extension _SupabaseClientExtensions on SupabaseClient {
             }
             yield* supabase
                 .fromUsersTable()
-                .stream(primaryKey: [UserData.idConverter])
+                .stream(primaryKey: [UserData.uuidConverter])
                 .eq(UserData.uuidConverter, supabase.auth.currentUser!.id)
                 .map((event) {
                   if (event.isNotEmpty) {
@@ -160,25 +159,6 @@ extension Read on UserRepository {
       throw UserFailure.fromGet();
     }
   }
-
-  /// Reads user profile by UUID
-  Future<UserProfile> readUserProfile({required String uuid}) async {
-    try {
-      return await _supabase
-          .fromUsersTable()
-          .select(
-              '${UserData.usernameConverter}, ${UserData.photoUrlConverter}')
-          .eq(UserData.uuidConverter, uuid)
-          .maybeSingle()
-          .withConverter(
-            (data) => data == null
-                ? UserProfile.empty
-                : UserProfile.converterSingle(data),
-          );
-    } catch (e) {
-      throw UserFailure.fromGet();
-    }
-  }
 }
 
 /// Extension for update operations
@@ -216,10 +196,9 @@ extension Update on UserRepository {
     required dynamic data,
   }) async {
     try {
-      if (user.id == null) return;
       await _supabase
           .fromUsersTable()
-          .update({field: data}).eq(UserData.idConverter, user.id!);
+          .update({field: data}).eq(UserData.uuidConverter, user.uuid);
     } catch (e) {
       throw UserFailure.fromUpdate();
     }
@@ -230,10 +209,9 @@ extension Update on UserRepository {
     required Map<String, dynamic> data,
   }) async {
     try {
-      if (user.id == null) return;
       await _supabase.fromUsersTable().update(data).eq(
             UserData.uuidConverter,
-            user.id!,
+            user.uuid,
           );
     } catch (e) {
       throw UserFailure.fromUpdate();

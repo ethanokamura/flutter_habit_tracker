@@ -24,18 +24,53 @@ class HabitRepository {
   List<Habit> get currentHabits => _habitList;
 
   // save first date of app startup (for heatmap)
-  Future<void> saveFirstLaunchDate() async {
-    final existingSettings = await _isar.appSettings.where().findFirst();
-    if (existingSettings == null) {
-      final settings = AppSettings()..firstLaunchDate = DateTime.now();
-      await _isar.writeTxn(() => _isar.appSettings.put(settings));
+  Future<void> storeLaunchDate() async {
+    final today = DateTime.now();
+    final normalizedDate = DateTime(today.year, today.month, today.day);
+    try {
+      final existingSettings = await _isar.appSettings.where().findFirst();
+      if (existingSettings == null) {
+        final settings = AppSettings()
+          ..firstLaunchDate = normalizedDate
+          ..lastLaunchDate = normalizedDate;
+        await _isar.writeTxn(() => _isar.appSettings.put(settings));
+      } else {
+        final settings = AppSettings()..lastLaunchDate = normalizedDate;
+        await _isar.writeTxn(() => _isar.appSettings.put(settings));
+      }
+    } catch (e) {
+      throw HabitFailure.fromGet();
     }
   }
 
   // get the first date of app startup (for heatmap)
-  Future<DateTime?> getFirstLaunchDate() async {
-    final settings = await _isar.appSettings.where().findFirst();
-    return settings?.firstLaunchDate;
+  Future<DateTime> getFirstLaunchDate() async {
+    final today = DateTime.now();
+    final normalizedDate = DateTime(today.year, today.month, today.day);
+    try {
+      final settings = await _isar.appSettings.where().findFirst();
+      if (settings == null || settings.firstLaunchDate == null) {
+        return normalizedDate;
+      }
+      return settings.firstLaunchDate!;
+    } catch (e) {
+      throw HabitFailure.fromGet();
+    }
+  }
+
+  // get the last date of app startup (for heatmap)
+  Future<DateTime> getLastLaunchDate() async {
+    final today = DateTime.now();
+    final normalizedDate = DateTime(today.year, today.month, today.day);
+    try {
+      final settings = await _isar.appSettings.where().findFirst();
+      if (settings == null || settings.lastLaunchDate == null) {
+        return normalizedDate;
+      }
+      return settings.lastLaunchDate!;
+    } catch (e) {
+      throw HabitFailure.fromGet();
+    }
   }
 
   // Load the initial habits from Isar
@@ -112,9 +147,13 @@ class HabitRepository {
 
   // check to see if habit is completed
   Future<bool> isHabitComplete({required int id}) async {
-    final habit = await _isar.habits.get(id);
-    if (habit == null) return false;
-    return habit.isCompleted;
+    try {
+      final habit = await _isar.habits.get(id);
+      if (habit == null) return false;
+      return habit.isCompleted;
+    } catch (e) {
+      throw HabitFailure.fromGet();
+    }
   }
 
   // change name of habit

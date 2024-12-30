@@ -21,6 +21,11 @@ const AppSettingsSchema = CollectionSchema(
       id: 0,
       name: r'firstLaunchDate',
       type: IsarType.dateTime,
+    ),
+    r'lastLaunchDate': PropertySchema(
+      id: 1,
+      name: r'lastLaunchDate',
+      type: IsarType.dateTime,
     )
   },
   estimateSize: _appSettingsEstimateSize,
@@ -53,6 +58,7 @@ void _appSettingsSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.firstLaunchDate);
+  writer.writeDateTime(offsets[1], object.lastLaunchDate);
 }
 
 AppSettings _appSettingsDeserialize(
@@ -64,6 +70,7 @@ AppSettings _appSettingsDeserialize(
   final object = AppSettings();
   object.firstLaunchDate = reader.readDateTimeOrNull(offsets[0]);
   object.id = id;
+  object.lastLaunchDate = reader.readDateTimeOrNull(offsets[1]);
   return object;
 }
 
@@ -75,6 +82,8 @@ P _appSettingsDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 1:
       return (reader.readDateTimeOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -300,6 +309,80 @@ extension AppSettingsQueryFilter
       ));
     });
   }
+
+  QueryBuilder<AppSettings, AppSettings, QAfterFilterCondition>
+      lastLaunchDateIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lastLaunchDate',
+      ));
+    });
+  }
+
+  QueryBuilder<AppSettings, AppSettings, QAfterFilterCondition>
+      lastLaunchDateIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lastLaunchDate',
+      ));
+    });
+  }
+
+  QueryBuilder<AppSettings, AppSettings, QAfterFilterCondition>
+      lastLaunchDateEqualTo(DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'lastLaunchDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AppSettings, AppSettings, QAfterFilterCondition>
+      lastLaunchDateGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'lastLaunchDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AppSettings, AppSettings, QAfterFilterCondition>
+      lastLaunchDateLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'lastLaunchDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AppSettings, AppSettings, QAfterFilterCondition>
+      lastLaunchDateBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'lastLaunchDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension AppSettingsQueryObject
@@ -320,6 +403,19 @@ extension AppSettingsQuerySortBy
       sortByFirstLaunchDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'firstLaunchDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AppSettings, AppSettings, QAfterSortBy> sortByLastLaunchDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastLaunchDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppSettings, AppSettings, QAfterSortBy>
+      sortByLastLaunchDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastLaunchDate', Sort.desc);
     });
   }
 }
@@ -350,6 +446,19 @@ extension AppSettingsQuerySortThenBy
       return query.addSortBy(r'id', Sort.desc);
     });
   }
+
+  QueryBuilder<AppSettings, AppSettings, QAfterSortBy> thenByLastLaunchDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastLaunchDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppSettings, AppSettings, QAfterSortBy>
+      thenByLastLaunchDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastLaunchDate', Sort.desc);
+    });
+  }
 }
 
 extension AppSettingsQueryWhereDistinct
@@ -358,6 +467,12 @@ extension AppSettingsQueryWhereDistinct
       distinctByFirstLaunchDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'firstLaunchDate');
+    });
+  }
+
+  QueryBuilder<AppSettings, AppSettings, QDistinct> distinctByLastLaunchDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'lastLaunchDate');
     });
   }
 }
@@ -374,6 +489,13 @@ extension AppSettingsQueryProperty
       firstLaunchDateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'firstLaunchDate');
+    });
+  }
+
+  QueryBuilder<AppSettings, DateTime?, QQueryOperations>
+      lastLaunchDateProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lastLaunchDate');
     });
   }
 }

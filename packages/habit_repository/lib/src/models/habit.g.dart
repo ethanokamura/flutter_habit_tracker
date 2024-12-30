@@ -22,13 +22,18 @@ const HabitSchema = CollectionSchema(
       name: r'completedDays',
       type: IsarType.dateTimeList,
     ),
-    r'isEmpty': PropertySchema(
+    r'isCompleted': PropertySchema(
       id: 1,
+      name: r'isCompleted',
+      type: IsarType.bool,
+    ),
+    r'isEmpty': PropertySchema(
+      id: 2,
       name: r'isEmpty',
       type: IsarType.bool,
     ),
     r'name': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'name',
       type: IsarType.string,
     )
@@ -65,8 +70,9 @@ void _habitSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTimeList(offsets[0], object.completedDays);
-  writer.writeBool(offsets[1], object.isEmpty);
-  writer.writeString(offsets[2], object.name);
+  writer.writeBool(offsets[1], object.isCompleted);
+  writer.writeBool(offsets[2], object.isEmpty);
+  writer.writeString(offsets[3], object.name);
 }
 
 Habit _habitDeserialize(
@@ -78,7 +84,7 @@ Habit _habitDeserialize(
   final object = Habit();
   object.completedDays = reader.readDateTimeList(offsets[0]) ?? [];
   object.id = id;
-  object.name = reader.readString(offsets[2]);
+  object.name = reader.readString(offsets[3]);
   return object;
 }
 
@@ -94,6 +100,8 @@ P _habitDeserializeProp<P>(
     case 1:
       return (reader.readBool(offset)) as P;
     case 2:
+      return (reader.readBool(offset)) as P;
+    case 3:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -380,6 +388,16 @@ extension HabitQueryFilter on QueryBuilder<Habit, Habit, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Habit, Habit, QAfterFilterCondition> isCompletedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isCompleted',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<Habit, Habit, QAfterFilterCondition> isEmptyEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -523,6 +541,18 @@ extension HabitQueryObject on QueryBuilder<Habit, Habit, QFilterCondition> {}
 extension HabitQueryLinks on QueryBuilder<Habit, Habit, QFilterCondition> {}
 
 extension HabitQuerySortBy on QueryBuilder<Habit, Habit, QSortBy> {
+  QueryBuilder<Habit, Habit, QAfterSortBy> sortByIsCompleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isCompleted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Habit, Habit, QAfterSortBy> sortByIsCompletedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isCompleted', Sort.desc);
+    });
+  }
+
   QueryBuilder<Habit, Habit, QAfterSortBy> sortByIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isEmpty', Sort.asc);
@@ -561,6 +591,18 @@ extension HabitQuerySortThenBy on QueryBuilder<Habit, Habit, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Habit, Habit, QAfterSortBy> thenByIsCompleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isCompleted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Habit, Habit, QAfterSortBy> thenByIsCompletedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isCompleted', Sort.desc);
+    });
+  }
+
   QueryBuilder<Habit, Habit, QAfterSortBy> thenByIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isEmpty', Sort.asc);
@@ -593,6 +635,12 @@ extension HabitQueryWhereDistinct on QueryBuilder<Habit, Habit, QDistinct> {
     });
   }
 
+  QueryBuilder<Habit, Habit, QDistinct> distinctByIsCompleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isCompleted');
+    });
+  }
+
   QueryBuilder<Habit, Habit, QDistinct> distinctByIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isEmpty');
@@ -618,6 +666,12 @@ extension HabitQueryProperty on QueryBuilder<Habit, Habit, QQueryProperty> {
       completedDaysProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'completedDays');
+    });
+  }
+
+  QueryBuilder<Habit, bool, QQueryOperations> isCompletedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isCompleted');
     });
   }
 

@@ -28,13 +28,16 @@ class WeeklyHeatMap extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: value > 0
-                ? theme.heatMapColors[value.clamp(1, 5)]
+                ? theme.heatMapColors[value.clamp(0, 4)]
                 : date == currentDate
                     ? theme.colorScheme.primary
                     : theme.colorScheme.surface,
             borderRadius: defaultBorderRadius,
             border: date == currentDate
-                ? Border.all(color: context.theme.textColor, width: 2)
+                ? Border.all(
+                    color: context.theme.heatMapHighlightClor,
+                    width: 2,
+                  )
                 : null,
           ),
           child: PrimaryText(

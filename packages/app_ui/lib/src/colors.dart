@@ -6,6 +6,8 @@ abstract class CustomColors {
   // universal accent
   static const Color lightAccent = Color(0xff99dddb);
   static const Color darkAccent = Color(0xff38aba8);
+  static const Color lightHeatMapHighlightClor = Color(0xff206260);
+  static const Color darkHeatMapHighlightClor = Color(0xffbee9e8);
 
   // coloring colors:
   static const List<Color> lightHeatMapColors = [

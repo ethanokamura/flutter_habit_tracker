@@ -45,9 +45,7 @@ class HabitCubit extends Cubit<HabitState> {
   }
 
   /// Private helper funciton to cancel the user subscription
-  Future<void> _unwatchHabits() async {
-    return _currentHabitSubscription.cancel();
-  }
+  Future<void> _unwatchHabits() async => _currentHabitSubscription.cancel();
 
   Future<void> checkHabitCompletion({required int id}) async {
     emit(state.fromLoading());
@@ -115,7 +113,6 @@ class HabitCubit extends Cubit<HabitState> {
     emit(state.fromLoading());
     try {
       var launchDate = await _habitRepository.getFirstLaunchDate();
-      launchDate ??= DateTime.now();
       emit(state.fromLaunchLoaded(launchDate: launchDate));
     } on HabitFailure catch (failure) {
       emit(state.fromFailure(failure));

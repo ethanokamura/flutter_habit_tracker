@@ -17,7 +17,11 @@ class WeeklyHeatMap extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         final date = currentDate
-            .subtract(Duration(days: currentDate.weekday))
+            .subtract(
+              Duration(
+                days: currentDate.weekday == 7 ? 0 : currentDate.weekday - 1,
+              ),
+            )
             .add(Duration(days: index));
         final int value = datasets.containsKey(date) ? datasets[date]! : 0;
         return Container(

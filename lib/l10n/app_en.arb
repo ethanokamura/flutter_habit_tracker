@@ -51,6 +51,7 @@
   "invalid": "invalid",
   "unableToSave": "unable to save data",
   "habitProgressMap": "Habit Map",
+  "habitProgress": "My Progress",
   "habitHistory": "Habit History",
   "streak": "You have a {streak} day streak 🔥"
 }

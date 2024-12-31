@@ -5,11 +5,9 @@ import 'package:habit_tracker/features/habits/habit_progress/view/habit_progress
 class HabitProgressList extends StatelessWidget {
   const HabitProgressList({
     required this.habits,
-    required this.totalDays,
     super.key,
   });
   final List<Habit> habits;
-  final int totalDays;
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
@@ -23,9 +21,27 @@ class HabitProgressList extends StatelessWidget {
         final currentHabit = habits[index];
         return HabitProgressTile(
           habit: currentHabit,
-          totalDays: totalDays,
+          totalDays: getTotalDays(currentHabit.completedDays.first),
         );
       },
     );
   }
+}
+
+int getTotalDays(DateTime? startDate) {
+  if (startDate == null) return 1;
+  final now = DateTime.now();
+
+  // Ensure we only compare dates without time
+  final today = DateTime(now.year, now.month, now.day);
+  final targetDate = DateTime(
+    startDate.year,
+    startDate.month,
+    startDate.day,
+  );
+
+  // Calculate the difference
+  final difference = today.difference(targetDate).inDays;
+
+  return difference + 1;
 }

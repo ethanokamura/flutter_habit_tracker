@@ -53,5 +53,6 @@
   "habitProgressMap": "Habit Map",
   "habitProgress": "My Progress",
   "habitHistory": "Habit History",
-  "streak": "You have a {streak} day streak 🔥"
+  "streak": "You have a {streak} day streak 🔥",
+  "emptyHabitList": "No habits have been created yet"
 }

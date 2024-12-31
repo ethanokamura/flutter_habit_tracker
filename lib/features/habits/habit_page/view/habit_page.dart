@@ -30,9 +30,6 @@ class _HabitPageState extends State<HabitPage>
           if (state.isFailure) {
             return _messageWidget(context.l10n.failureToLoad);
           }
-          if (state.habits.isEmpty) {
-            return _messageWidget(context.l10n.failureToLoad);
-          }
           return HabitPageView(habitCubit: context.read<HabitCubit>());
         },
       ),

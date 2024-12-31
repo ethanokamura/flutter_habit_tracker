@@ -45,33 +45,35 @@ class HabitPageView extends StatelessWidget {
           const VerticalSpacer(),
           TitleText(text: '${context.l10n.habits}:'),
           const VerticalSpacer(),
-          HabitList(
-            habits: habitCubit.state.habits,
-            onChanged: (value, id) async =>
-                habitCubit.toggleCompletion(id: id!),
-            onEdit: (id) async => showDialog(
-              context: context,
-              builder: (context) {
-                return EditHabitBox(
-                  onSave: (value) async =>
-                      habitCubit.updateExistingHabit(id: id!, name: value),
-                  onCancel: handleExit,
-                );
-              },
-            ),
-            onDelete: (id) async => showDialog(
-              context: context,
-              builder: (context) {
-                return RemoveHabitPopup(
-                  onDelete: () async {
-                    await habitCubit.removeHabit(id: id!);
-                    handleExit();
-                  },
-                  onCancel: handleExit,
-                );
-              },
-            ),
-          ),
+          habitCubit.state.habits.isEmpty
+              ? Center(child: PrimaryText(text: context.l10n.emptyHabitList))
+              : HabitList(
+                  habits: habitCubit.state.habits,
+                  onChanged: (value, id) async =>
+                      habitCubit.toggleCompletion(id: id!),
+                  onEdit: (id) async => showDialog(
+                    context: context,
+                    builder: (context) {
+                      return EditHabitBox(
+                        onSave: (value) async => habitCubit.updateExistingHabit(
+                            id: id!, name: value),
+                        onCancel: handleExit,
+                      );
+                    },
+                  ),
+                  onDelete: (id) async => showDialog(
+                    context: context,
+                    builder: (context) {
+                      return RemoveHabitPopup(
+                        onDelete: () async {
+                          await habitCubit.removeHabit(id: id!);
+                          handleExit();
+                        },
+                        onCancel: handleExit,
+                      );
+                    },
+                  ),
+                ),
         ],
       ),
     );

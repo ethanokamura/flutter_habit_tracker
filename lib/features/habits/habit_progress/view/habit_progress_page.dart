@@ -24,23 +24,22 @@ class HabitProgressPage extends StatelessWidget {
             if (state.isFailure) {
               return _messageWidget(context.l10n.failureToLoad);
             }
-            if (state.habits.isEmpty) {
-              return _messageWidget(context.l10n.failureToLoad);
-            }
             final totalDays = getTotalDays(state.launchDate);
-            return Column(
-              children: [
-                TitleText(
-                  text:
-                      '${context.l10n.joined}: ${DateFormatter.formatTimestamp(state.launchDate!)}',
-                ),
-                const VerticalSpacer(),
-                HabitProgressList(
-                  habits: state.habits,
-                  totalDays: totalDays,
-                ),
-              ],
-            );
+            return state.habits.isEmpty
+                ? _messageWidget(context.l10n.emptyHabitList)
+                : Column(
+                    children: [
+                      TitleText(
+                        text:
+                            '${context.l10n.joined}: ${DateFormatter.formatTimestamp(state.launchDate!)}',
+                      ),
+                      const VerticalSpacer(),
+                      HabitProgressList(
+                        habits: state.habits,
+                        totalDays: totalDays,
+                      ),
+                    ],
+                  );
           },
         ),
       ),

@@ -7,6 +7,7 @@ class HabitFailure extends Failure {
   factory HabitFailure.fromGet() => const ReadFailure();
   factory HabitFailure.fromUpdate() => const UpdateFailure();
   factory HabitFailure.fromDelete() => const DeleteFailure();
+  factory HabitFailure.fromSync() => const SyncFailure();
 
   static const empty = EmptyFailure();
 }
@@ -29,4 +30,8 @@ class DeleteFailure extends HabitFailure {
 
 class EmptyFailure extends HabitFailure {
   const EmptyFailure() : super._();
+}
+
+class SyncFailure extends HabitFailure {
+  const SyncFailure() : super._();
 }

@@ -6,10 +6,11 @@ part 'habit.g.dart';
 
 @collection
 class Habit {
+  Habit(this.name, this.supabaseId);
   Id id = Isar.autoIncrement;
   late String name;
+  String? supabaseId;
   List<DateTime> completedDays = [];
-  bool get isEmpty => name.isEmpty && completedDays.isEmpty;
   bool get isCompleted => completedDays.any((date) =>
       date.year == DateTime.now().year &&
       date.month == DateTime.now().month &&

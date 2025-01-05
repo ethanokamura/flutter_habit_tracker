@@ -6,8 +6,8 @@ extension SupabaseExtensions on SupabaseClient {
 
   // Reference to the supabase tables
   SupabaseQueryBuilder fromUsersTable() => from('users');
-  SupabaseQueryBuilder froHabitsTable() => from('habits');
-  SupabaseQueryBuilder froHabitCompletionsTable() => from('habit_completions');
+  SupabaseQueryBuilder fromHabitsTable() => from('habits');
+  SupabaseQueryBuilder fromHabitCompletionsTable() => from('habit_completions');
 
   /// Upload A File
   /// [collection] the collection the file is stored in

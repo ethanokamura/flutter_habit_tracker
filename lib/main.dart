@@ -33,9 +33,7 @@ Future<void> main() async {
         );
         // Initialize production dependencies
         final habitRepository = HabitRepository(isar);
-        await habitRepository.loadInitialHabits();
-        await habitRepository.storeLaunchDate();
-
+        await habitRepository.init();
         return App(
           userRepository: userRepository,
           habitRepository: habitRepository,

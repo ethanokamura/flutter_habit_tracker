@@ -20,6 +20,7 @@ BlocListener<C, S> listenForHabitFailures<C extends Cubit<S>, S>({
           ReadFailure() => context.l10n.fetchFailure,
           UpdateFailure() => context.l10n.updateFailure,
           DeleteFailure() => context.l10n.deleteFailure,
+          SyncFailure() => context.l10n.syncFailure,
           _ => context.l10n.unknownFailure,
         };
         context.showSnackBar(message);

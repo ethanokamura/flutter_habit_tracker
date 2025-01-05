@@ -6,7 +6,7 @@ part 'profile_state.dart';
 /// Manages the state and logic for user-related operations.
 class ProfileCubit extends Cubit<ProfileState> {
   /// Creates a new instance of [ProfileCubit].
-  /// Requires a [UserRepository] and [TagRepository] to handle data operations.
+  /// Requires a [UserRepository] to handle data operations.
   ProfileCubit({
     required UserRepository userRepository,
   })  : _userRepository = userRepository,

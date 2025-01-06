@@ -60,6 +60,7 @@ class AppIcons {
   static const IconData back = FontAwesomeIcons.arrowLeft;
   static const IconData images = FontAwesomeIcons.images;
   static const IconData camera = FontAwesomeIcons.camera;
+  static const IconData logOut = FontAwesomeIcons.arrowRightFromBracket;
 
   // toggles
   static const IconData checked = FontAwesomeIcons.solidSquareCheck;

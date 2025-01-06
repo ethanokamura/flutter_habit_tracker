@@ -1,7 +1,9 @@
 import 'package:app_core/app_core.dart';
 import 'package:app_ui/app_ui.dart';
+import 'package:habit_tracker/app/cubit/app_cubit.dart';
 import 'package:habit_tracker/features/images/images.dart';
 import 'package:habit_tracker/features/profile/cubit/profile_cubit.dart';
+import 'package:habit_tracker/features/profile/edit_profile/view/signout_popup.dart';
 import 'package:habit_tracker/features/profile/profile_cubit_wrapper.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
@@ -71,6 +73,7 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    void handleExit() => Navigator.of(context, rootNavigator: true).pop();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -106,7 +109,7 @@ class _EditProfileViewState extends State<EditProfileView> {
         ),
         const VerticalSpacer(),
         SizedBox(
-          width: 200,
+          width: 300,
           child: ActionButton(
             text: _usernameIsValid ? context.l10n.save : context.l10n.invalid,
             onTap: _usernameIsValid
@@ -134,6 +137,25 @@ class _EditProfileViewState extends State<EditProfileView> {
                     }
                   }
                 : null,
+          ),
+        ),
+        SizedBox(
+          width: 300,
+          child: ActionButton(
+            text: context.l10n.logOut,
+            icon: AppIcons.logOut,
+            onTap: () async => showDialog(
+              context: context,
+              builder: (context) {
+                return SignoutPopup(
+                  onDelete: () async {
+                    await context.read<AppCubit>().logOut();
+                    handleExit();
+                  },
+                  onCancel: handleExit,
+                );
+              },
+            ),
           ),
         ),
       ],

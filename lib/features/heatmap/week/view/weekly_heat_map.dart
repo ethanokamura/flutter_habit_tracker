@@ -35,7 +35,7 @@ class WeeklyHeatMap extends StatelessWidget {
             borderRadius: defaultBorderRadius,
             border: date == currentDate
                 ? Border.all(
-                    color: context.theme.heatMapHighlightClor,
+                    color: theme.heatMapColors[(value + 1).clamp(0, 4)],
                     width: 2,
                   )
                 : null,

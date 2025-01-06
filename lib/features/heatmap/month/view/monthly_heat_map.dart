@@ -37,7 +37,7 @@ class MonthlyHeatMap extends StatelessWidget {
             borderRadius: defaultBorderRadius,
             border: date == currentDate
                 ? Border.all(
-                    color: context.theme.heatMapHighlightClor,
+                    color: theme.heatMapColors[value.clamp(0, 4)],
                     width: 2,
                   )
                 : null,

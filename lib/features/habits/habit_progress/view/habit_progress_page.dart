@@ -17,7 +17,7 @@ class HabitProgressPage extends StatelessWidget {
         create: (_) => HabitCubit(
           habitRepository: context.read<HabitRepository>(),
           userRepository: context.read<UserRepository>(),
-        )..syncHabitCompletion(),
+        )..getLaunchDate(),
         child: BlocBuilder<HabitCubit, HabitState>(
           builder: (context, state) {
             if (state.isLoading) {

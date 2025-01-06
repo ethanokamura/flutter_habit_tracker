@@ -25,9 +25,7 @@ class _HabitHistoryPageState extends State<HabitHistoryPage>
       create: (_) => HabitCubit(
         habitRepository: context.read<HabitRepository>(),
         userRepository: context.read<UserRepository>(),
-      )
-        ..getLaunchDate()
-        ..syncHabitCompletion(),
+      )..getLaunchDate(),
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
           if (state.isLoading) {

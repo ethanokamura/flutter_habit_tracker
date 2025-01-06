@@ -1,5 +1,6 @@
 import 'package:app_core/app_core.dart';
 import 'package:habit_repository/habit_repository.dart';
+import 'package:user_repository/user_repository.dart';
 
 part 'habit_state.dart';
 
@@ -8,12 +9,15 @@ class HabitCubit extends Cubit<HabitState> {
   /// Requires a [HabitRepository] to handle data operations.
   HabitCubit({
     required HabitRepository habitRepository,
+    required UserRepository userRepository,
   })  : _habitRepository = habitRepository,
+        _userRepository = userRepository,
         super(HabitState.initial()) {
     _fetchInitialList();
     _watchHabits();
   }
 
+  final UserRepository _userRepository;
   final HabitRepository _habitRepository;
 
   /// Stops listening to the current user
@@ -42,6 +46,10 @@ class HabitCubit extends Cubit<HabitState> {
               (habits) => emit(state.fromHabitsLoaded(habits: habits)),
               onError: (e) => emit(state.fromFailure(e)),
             );
+  }
+
+  Future<void> syncHabitCompletion() async {
+    if (_isNewDay()) await _habitRepository.syncHabitCompletions();
   }
 
   /// Private helper funciton to cancel the user subscription
@@ -77,7 +85,10 @@ class HabitCubit extends Cubit<HabitState> {
   Future<void> saveNewHabit({required String name}) async {
     emit(state.fromLoading());
     try {
-      await _habitRepository.addHabit(habitName: name);
+      await _habitRepository.addHabit(
+        name: name,
+        userId: _userRepository.user.uuid,
+      );
       emit(state.fromLoaded());
     } on HabitFailure catch (failure) {
       emit(state.fromFailure(failure));
@@ -118,4 +129,12 @@ class HabitCubit extends Cubit<HabitState> {
       emit(state.fromFailure(failure));
     }
   }
+
+  final DateTime _today =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+
+  /// Compares last login date to the current day
+  bool _isNewDay() =>
+      _habitRepository.lastSyncDate == null ||
+      _habitRepository.lastSyncDate != _today;
 }

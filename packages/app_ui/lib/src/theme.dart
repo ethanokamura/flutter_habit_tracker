@@ -66,12 +66,6 @@ extension CustomThemeData on ThemeData {
   List<Color> get heatMapColors => brightness == Brightness.dark
       ? CustomColors.darkHeatMapColors
       : CustomColors.lightHeatMapColors;
-
-  /// [startDateColor]
-  /// Used on for id start date when coloring the heatmap
-  Color get heatMapHighlightClor => brightness == Brightness.dark
-      ? CustomColors.darkHeatMapHighlightClor
-      : CustomColors.lightHeatMapHighlightClor;
 }
 
 // Dark Mode

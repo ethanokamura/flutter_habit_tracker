@@ -24,25 +24,19 @@ class WeeklyHeatMap extends StatelessWidget {
             )
             .add(Duration(days: index));
         final int value = datasets.containsKey(date) ? datasets[date]! : 0;
-        return Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: value > 0
-                ? theme.heatMapColors[value.clamp(0, 4)]
-                : date == currentDate
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.surface,
-            borderRadius: defaultBorderRadius,
-            border: date == currentDate
-                ? Border.all(
-                    color: theme.heatMapColors[(value + 1).clamp(0, 4)],
-                    width: 2,
-                  )
-                : null,
-          ),
-          child: PrimaryText(
-            text: weekdayLetters[index],
-            inverted: value > 0,
+        return Material(
+          color: value > 0
+              ? theme.heatMapColors[value.clamp(0, 4)]
+              : date == currentDate
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.surface,
+          borderRadius: defaultBorderRadius,
+          elevation: date == currentDate ? defaultElevation : 0,
+          child: Center(
+            child: PrimaryText(
+              text: weekdayLetters[index],
+              inverted: value > 0,
+            ),
           ),
         );
       },

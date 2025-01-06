@@ -36,7 +36,7 @@ class DefaultButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (icon != null) defaultIconStyle(context, icon!),
-            if (text != null && icon != null) const SizedBox(width: 10),
+            if (text != null && icon != null) const SizedBox(width: 5),
             if (text != null)
               ButtonText(
                 text: text!,
@@ -85,7 +85,7 @@ class ActionButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (icon != null) inverseIconStyle(context, icon!),
-            if (text != null && icon != null) const SizedBox(width: 10),
+            if (text != null && icon != null) const SizedBox(width: 5),
             if (text != null)
               ButtonText(
                 text: text!,
@@ -255,7 +255,7 @@ class HabitTileButton extends StatelessWidget {
               completed
                   ? inverseIconStyle(context, icon!, size: 18)
                   : defaultIconStyle(context, icon!, size: 18),
-            if (text != null && icon != null) const SizedBox(width: 10),
+            if (text != null && icon != null) const SizedBox(width: 5),
             if (text != null)
               HabitText(
                 text: text!,

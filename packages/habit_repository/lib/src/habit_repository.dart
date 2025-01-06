@@ -64,6 +64,7 @@ extension Init on HabitRepository {
           ..lastLaunchDate = _today;
         await _isar.writeTxn(() => _isar.appSettings.put(settings));
       } else {
+        lastSyncDate = existingSettings.lastLaunchDate;
         final settings = AppSettings()..lastLaunchDate = _today;
         await _isar.writeTxn(() => _isar.appSettings.put(settings));
       }
@@ -107,11 +108,14 @@ extension Read on HabitRepository {
   Future<DateTime> getFirstLaunchDate() async {
     try {
       final settings = await _isar.appSettings.where().findFirst();
+      print(settings);
       if (settings == null || settings.firstLaunchDate == null) {
         return _today;
       }
+      print(settings.firstLaunchDate);
       return settings.firstLaunchDate!;
     } catch (e) {
+      print(e);
       throw HabitFailure.fromGet();
     }
   }
@@ -152,7 +156,6 @@ extension Update on HabitRepository {
         // save updated habits
         await _isar.habits.put(habit);
       });
-      await syncHabitCompletions();
     } catch (e) {
       throw HabitFailure.fromUpdate();
     }

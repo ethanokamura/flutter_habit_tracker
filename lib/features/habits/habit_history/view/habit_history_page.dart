@@ -4,6 +4,7 @@ import 'package:habit_repository/habit_repository.dart';
 import 'package:habit_tracker/features/habits/cubit/habit_cubit.dart';
 import 'package:habit_tracker/features/habits/habit_history/view/habit_history.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
+import 'package:user_repository/user_repository.dart';
 
 class HabitHistoryPage extends StatefulWidget {
   const HabitHistoryPage({super.key});
@@ -23,7 +24,10 @@ class _HabitHistoryPageState extends State<HabitHistoryPage>
     return BlocProvider(
       create: (_) => HabitCubit(
         habitRepository: context.read<HabitRepository>(),
-      )..getLaunchDate(),
+        userRepository: context.read<UserRepository>(),
+      )
+        ..getLaunchDate()
+        ..syncHabitCompletion(),
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
           if (state.isLoading) {

@@ -3,6 +3,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:habit_repository/habit_repository.dart';
 import 'package:habit_tracker/features/habits/cubit/habit_cubit.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
+import 'package:user_repository/user_repository.dart';
 
 class HabitTile extends StatelessWidget {
   const HabitTile({
@@ -49,6 +50,7 @@ class HabitTile extends StatelessWidget {
       child: BlocProvider(
         create: (_) => HabitCubit(
           habitRepository: context.read<HabitRepository>(),
+          userRepository: context.read<UserRepository>(),
         )..checkHabitCompletion(id: id),
         child: BlocBuilder<HabitCubit, HabitState>(
           builder: (context, state) {

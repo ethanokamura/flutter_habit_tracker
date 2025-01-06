@@ -1,4 +1,5 @@
 import 'package:app_ui/src/constants.dart';
+import 'package:app_ui/src/theme.dart';
 import 'package:app_ui/src/extensions.dart';
 import 'package:app_ui/src/text.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,13 @@ import 'package:flutter/material.dart';
 class DefaultContainer extends StatelessWidget {
   const DefaultContainer({
     required this.child,
+    this.accent,
     this.horizontal,
     this.vertical,
     super.key,
   });
 
+  final bool? accent;
   final double? horizontal;
   final double? vertical;
   final Widget child;
@@ -21,7 +24,9 @@ class DefaultContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: context.theme.colorScheme.surface,
+      color: accent == null || !accent!
+          ? context.theme.colorScheme.surface
+          : context.theme.accentColor,
       borderRadius: defaultBorderRadius,
       elevation: defaultElevation,
       child: Padding(

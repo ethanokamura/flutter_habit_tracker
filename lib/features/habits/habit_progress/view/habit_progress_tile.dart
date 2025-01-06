@@ -12,6 +12,7 @@ class HabitProgressTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultContainer(
+      accent: habit.completedDays.length / totalDays > .5,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

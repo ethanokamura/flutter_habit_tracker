@@ -108,14 +108,11 @@ extension Read on HabitRepository {
   Future<DateTime> getFirstLaunchDate() async {
     try {
       final settings = await _isar.appSettings.where().findFirst();
-      print(settings);
       if (settings == null || settings.firstLaunchDate == null) {
         return _today;
       }
-      print(settings.firstLaunchDate);
       return settings.firstLaunchDate!;
     } catch (e) {
-      print(e);
       throw HabitFailure.fromGet();
     }
   }

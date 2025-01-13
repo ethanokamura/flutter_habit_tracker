@@ -48,8 +48,12 @@ class HabitCubit extends Cubit<HabitState> {
             );
   }
 
-  Future<void> syncHabitCompletion() async {
-    if (_isNewDay()) await _habitRepository.syncHabitCompletions();
+  Future<void> syncHabits() async {
+    if (_isNewDay()) {
+      await _habitRepository.syncDatabase(
+        userId: _userRepository.user.uuid,
+      );
+    }
   }
 
   /// Private helper funciton to cancel the user subscription

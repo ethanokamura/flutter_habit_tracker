@@ -77,6 +77,7 @@ class HabitCubit extends Cubit<HabitState> {
     try {
       await _habitRepository.updateHabitCompletion(
         id: id,
+        userId: _userRepository.user.uuid,
         completed: completed,
       );
       emit(state.fromActionLoaded(completed: completed));
@@ -106,7 +107,11 @@ class HabitCubit extends Cubit<HabitState> {
   }) async {
     emit(state.fromLoading());
     try {
-      await _habitRepository.updateHabitName(id: id, newName: name);
+      await _habitRepository.updateHabitName(
+        id: id,
+        userId: _userRepository.user.uuid,
+        newName: name,
+      );
       emit(state.fromLoaded());
     } on HabitFailure catch (failure) {
       emit(state.fromFailure(failure));

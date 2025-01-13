@@ -1,10 +1,13 @@
+import 'package:app_core/app_core.dart';
 import 'package:app_ui/app_ui.dart';
+import 'package:habit_repository/habit_repository.dart';
 import 'package:habit_tracker/features/habits/cubit/habit_cubit.dart';
 import 'package:habit_tracker/features/habits/habit_page/view/habit_list.dart';
 import 'package:habit_tracker/features/habits/habit_page/view/edit_habit.dart';
 import 'package:habit_tracker/features/habits/habit_page/view/remove_habit_popup.dart';
 import 'package:habit_tracker/features/heatmap/heatmap.dart';
 import 'package:habit_tracker/features/heatmap/streak/streak.dart';
+import 'package:habit_tracker/features/positive_rabbit/positive_rabbit.dart';
 import 'package:habit_tracker/features/profile/profile.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
 
@@ -19,7 +22,7 @@ class HabitPageView extends StatelessWidget {
       centerTitle: false,
       actions: [
         AppBarButton(
-          icon: AppIcons.circleUser,
+          icon: AppIcons.settings,
           onTap: () async => profilePopUp(context),
         )
       ],
@@ -37,6 +40,10 @@ class HabitPageView extends StatelessWidget {
       ),
       body: ListView(
         children: [
+          PositiveRabit(
+            size: 96,
+            id: context.read<HabitRepository>().messageId,
+          ),
           SizedBox(
             height: 60,
             child: WeekView(habits: habitCubit.state.habits),

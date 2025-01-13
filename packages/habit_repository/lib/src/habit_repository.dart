@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:app_core/app_core.dart';
 import 'package:api_client/api_client.dart';
 import 'package:habit_repository/habit_repository.dart';
@@ -18,6 +20,10 @@ class HabitRepository {
   DateTime? lastSyncDate;
   final DateTime _today =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  int _messageId = 0;
+  final int _totalMessages = 30;
+
+  int get messageId => _messageId;
 
   // Stream of habit changes
   Stream<List<Habit>> get watchHabits =>
@@ -68,6 +74,7 @@ extension Init on HabitRepository {
         final settings = AppSettings()..lastLaunchDate = _today;
         await _isar.writeTxn(() => _isar.appSettings.put(settings));
       }
+      _messageId = Random().nextInt(_totalMessages);
     } catch (e) {
       throw HabitFailure.fromGet();
     }

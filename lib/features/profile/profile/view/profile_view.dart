@@ -27,7 +27,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    void handleExit() => Navigator.of(context, rootNavigator: true).pop();
+    void handleExit() => context.popUntil((route) => route.isFirst);
     return SizedBox(
       width: double.infinity,
       child: Padding(

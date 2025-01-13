@@ -22,6 +22,7 @@ class HabitRepository {
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   int _messageId = 0;
   final int _totalMessages = 30;
+  Set<DateTime> _supabaseCompletions = {};
 
   /// Public getter for positive [_messageId]
   int get messageId => _messageId;
@@ -56,6 +57,7 @@ extension Init on HabitRepository {
     try {
       await _loadInitialHabits();
       await _storeLaunchDate();
+      await _initSupabaseCompletions();
     } catch (e) {
       throw HabitFailure.fromGet();
     }
@@ -91,17 +93,27 @@ extension Init on HabitRepository {
       throw HabitFailure.fromGet();
     }
   }
+
+  Future<void> _initSupabaseCompletions() async {
+    if (_habitList.isEmpty) return;
+    for (final habit in _habitList) {
+      _supabaseCompletions = await _getSupabaseCompletions(habit: habit);
+    }
+  }
 }
 
 extension Create on HabitRepository {
   // create habit
   Future<void> addHabit({
     required String name,
-    required String userId,
+    required String? userId,
   }) async {
     try {
-      // save to Supabase
-      final habitId = await _addSupabaseHabit(name: name, userId: userId);
+      String? habitId;
+      if (userId != null && userId.isNotEmpty) {
+        // save to Supabase
+        habitId = await _addSupabaseHabit(name: name, userId: userId);
+      }
       // save to Isar
       final newHabit = Habit(name, habitId);
       await _isar.writeTxn(() => _isar.habits.put(newHabit));
@@ -142,6 +154,7 @@ extension Update on HabitRepository {
   Future<void> updateHabitCompletion({
     required int id,
     required bool completed,
+    required String? userId,
   }) async {
     // find specific habit
     final habit = await _isar.habits.get(id);
@@ -149,7 +162,7 @@ extension Update on HabitRepository {
     // update completion status
     try {
       await _isar.writeTxn(() async {
-        // if habit is compelete   -> add date
+        // if habit is compelete -> add date
         if (completed && !habit.completedDays.contains(_today)) {
           // add the current date if it is not already in the list
           habit.completedDays.add(_today);
@@ -161,14 +174,47 @@ extension Update on HabitRepository {
         // save updated habits
         await _isar.habits.put(habit);
       });
+      if (userId != null && userId.isNotEmpty) {
+        await _updateSupabaseCompletion(
+          habit: habit,
+          userId: userId,
+          completed: completed,
+        );
+      }
+      // save updated habits
+      await _isar.habits.put(habit);
     } catch (e) {
       throw HabitFailure.fromUpdate();
+    }
+  }
+
+  Future<void> _updateSupabaseCompletion({
+    required Habit habit,
+    required String userId,
+    required bool completed,
+  }) async {
+    // if habit is compelete -> add date
+    if (completed && !_supabaseCompletions.contains(_today)) {
+      // add the current date if it is not already in the list
+      _addSupabaseCompletedDay(
+        habit: habit,
+        userId: userId,
+        completedDay: _today,
+      );
+    }
+    // if habit is incompelete -> remove date
+    else {
+      _removeSupabaseCompletedDay(
+        habit: habit,
+        completedDay: _today,
+      );
     }
   }
 
   // change name of habit
   Future<void> updateHabitName({
     required int id,
+    required String? userId,
     required String newName,
   }) async {
     // find the specific habit
@@ -177,11 +223,16 @@ extension Update on HabitRepository {
 
     try {
       // update Supabase
-      final data = SupabaseHabit.update(name: newName);
-      await _supabase
-          .fromHabitsTable()
-          .upsert(data)
-          .eq(SupabaseHabit.idConverter, habit.supabaseId!);
+      if (userId != null && userId.isNotEmpty) {
+        final data = SupabaseHabit.update(name: newName);
+        if (_habitDoesNotExistInSupbase(habit.supabaseId)) {
+          _addSupabaseHabit(name: habit.name, userId: userId);
+        }
+        await _supabase
+            .fromHabitsTable()
+            .upsert(data)
+            .eq(SupabaseHabit.idConverter, habit.supabaseId!);
+      }
       // update Isar
       await _isar.writeTxn(() async {
         habit.name = newName;
@@ -219,18 +270,36 @@ extension Delete on HabitRepository {
 }
 
 extension Sync on HabitRepository {
-  Future<void> syncDatabase({required String userId}) async {
+  Future<Set<DateTime>> _getSupabaseCompletions({
+    required Habit habit,
+  }) async {
+    try {
+      if (habit.supabaseId == null || habit.supabaseId!.isEmpty) return {};
+      final completedDays =
+          await _fetchSupabaseHabitCompletions(habitId: habit.supabaseId!);
+      return completedDays;
+    } catch (e) {
+      print(e);
+      throw HabitFailure.fromSync();
+    }
+  }
+
+  Future<void> syncDatabase({required String? userId}) async {
     try {
       final existingSettings = await _isar.appSettings.where().findFirst();
       if (existingSettings == null) return;
       final isSynced = existingSettings.synced;
       if (isSynced) return;
+      if (userId == null || userId.isEmpty) return;
       await _syncWithSupabase(userId: userId);
     } catch (e) {
       print(e);
       throw HabitFailure.fromSync();
     }
   }
+
+  bool _habitIsInSupabase(Habit habit) =>
+      ((habit.supabaseId != null) && (habit.supabaseId!.isNotEmpty));
 
   Future<void> _syncWithSupabase({required String userId}) async {
     try {
@@ -241,17 +310,16 @@ extension Sync on HabitRepository {
       // index through each habit
       for (Habit habit in habits) {
         // add habit
-        if (!habit.addedToSupabase) {
+        if (_habitIsInSupabase(habit)) {
           final id = await _addSupabaseHabit(name: habit.name, userId: userId);
           await _isar.writeTxn(() async {
             habit.supabaseId = id;
-            habit.addedToSupabase = true;
             await _isar.habits.put(habit);
           });
         }
         // sync completions
         else {
-          await _syncHabitCompletions(habit: habit);
+          await _syncHabitCompletions(habit: habit, userId: userId);
         }
       }
       await _markAsSynced();
@@ -293,30 +361,32 @@ extension Sync on HabitRepository {
     }
   }
 
-  Future<void> _syncHabitCompletions({required Habit habit}) async {
+  Future<void> _syncHabitCompletions({
+    required Habit habit,
+    required String userId,
+  }) async {
     try {
       final isarCompletedDays = habit.completedDays;
-      final supabaseCompletedDays =
-          await _fetchSupabaseHabitCompletions(habitId: habit.supabaseId!);
       // add completions in supabase
       for (DateTime completedDay in isarCompletedDays) {
-        if (!supabaseCompletedDays.contains(completedDay)) {
+        if (!_supabaseCompletions.contains(completedDay)) {
           _addSupabaseCompletedDay(
-            habitId: habit.supabaseId!,
+            habit: habit,
+            userId: userId,
             completedDay: completedDay,
           );
         }
         // remove unnecessary days
         if (_isLastWeek(completedDay)) {
-          habit.completedDays.remove(completedDay);
+          habit.completedDays.removeWhere((date) => date == _today);
           await _isar.writeTxn(() => _isar.habits.put(habit));
         }
       }
       // remove completions in supabase
-      for (DateTime completedDay in supabaseCompletedDays) {
+      for (DateTime completedDay in _supabaseCompletions) {
         if (!isarCompletedDays.contains(completedDay)) {
           _removeSupabaseCompletedDay(
-            habitId: habit.supabaseId!,
+            habit: habit,
             completedDay: completedDay,
           );
         }
@@ -351,15 +421,22 @@ extension Sync on HabitRepository {
     }
   }
 
+  bool _habitDoesNotExistInSupbase(String? id) =>
+      ((id != null) && (id.isNotEmpty));
+
   Future<void> _addSupabaseCompletedDay({
-    required String habitId,
+    required Habit habit,
+    required String userId,
     required DateTime completedDay,
   }) async {
-    final data = HabitCompletions.insert(
-      habitId: habitId,
-      createdAt: completedDay,
-    );
     try {
+      if (!_habitDoesNotExistInSupbase(habit.supabaseId)) {
+        _addSupabaseHabit(name: habit.name, userId: userId);
+      }
+      final data = HabitCompletions.insert(
+        habitId: habit.supabaseId,
+        createdAt: completedDay,
+      );
       await _supabase.fromHabitCompletionsTable().insert(data);
     } catch (e) {
       print(e);
@@ -368,12 +445,13 @@ extension Sync on HabitRepository {
   }
 
   Future<void> _removeSupabaseCompletedDay({
-    required String habitId,
+    required Habit habit,
     required DateTime completedDay,
   }) async {
     try {
+      if (!_habitDoesNotExistInSupbase(habit.supabaseId)) return;
       await _supabase.fromHabitCompletionsTable().delete().match({
-        HabitCompletions.habitIdConverter: habitId,
+        HabitCompletions.habitIdConverter: habit.supabaseId!,
         HabitCompletions.createdAtConverter: completedDay,
       });
     } catch (e) {

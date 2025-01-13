@@ -21,6 +21,7 @@ dependencies:
   provider: ^6.1.2
   user_repository:
     path: packages/user_repository
+  flutter_launcher_icons: ^0.14.2
 
 dev_dependencies:
   analyzer: ^7.1.0
@@ -34,4 +35,5 @@ flutter:
   assets:
     - assets/
     - assets/logo/
+    - assets/icon/
     - .env

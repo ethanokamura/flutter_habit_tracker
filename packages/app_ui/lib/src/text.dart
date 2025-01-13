@@ -45,12 +45,14 @@ class TitleText extends StatelessWidget {
     this.maxLines,
     this.fontSize,
     this.staticSize,
+    this.alignment,
     super.key,
   });
   final String text;
   final int? maxLines;
   final double? fontSize;
   final bool? staticSize;
+  final TextAlign? alignment;
   @override
   Widget build(BuildContext context) {
     return staticSize != null && staticSize!
@@ -58,6 +60,7 @@ class TitleText extends StatelessWidget {
             text,
             overflow: TextOverflow.ellipsis,
             maxLines: maxLines ?? 1,
+            textAlign: alignment,
             style: TextStyle(
               color: context.theme.textColor,
               fontSize: fontSize ?? 20,
@@ -69,6 +72,7 @@ class TitleText extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: maxLines ?? 1,
             maxFontSize: fontSize ?? 20,
+            textAlign: alignment,
             style: TextStyle(
               color: context.theme.textColor,
               fontSize: fontSize ?? 20,
@@ -130,6 +134,7 @@ class PrimaryText extends StatelessWidget {
     this.fontSize,
     this.inverted,
     this.staticSize,
+    this.alignment,
     super.key,
   });
   final String text;
@@ -137,6 +142,7 @@ class PrimaryText extends StatelessWidget {
   final double? fontSize;
   final bool? inverted;
   final bool? staticSize;
+  final TextAlign? alignment;
   @override
   Widget build(BuildContext context) {
     return staticSize != null && staticSize!
@@ -144,6 +150,7 @@ class PrimaryText extends StatelessWidget {
             text,
             overflow: TextOverflow.ellipsis,
             maxLines: maxLines ?? 1,
+            textAlign: alignment,
             style: TextStyle(
               color: inverted == null || !inverted!
                   ? context.theme.textColor
@@ -156,6 +163,7 @@ class PrimaryText extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: maxLines ?? 1,
             maxFontSize: fontSize ?? 16,
+            textAlign: alignment,
             style: TextStyle(
               color: inverted == null || !inverted!
                   ? context.theme.textColor
@@ -169,12 +177,14 @@ class PrimaryText extends StatelessWidget {
 class SecondaryText extends StatelessWidget {
   const SecondaryText({
     required this.text,
+    this.alignment,
     this.maxLines,
     this.fontSize,
     this.staticSize,
     super.key,
   });
   final String text;
+  final TextAlign? alignment;
   final int? maxLines;
   final double? fontSize;
   final bool? staticSize;
@@ -185,6 +195,7 @@ class SecondaryText extends StatelessWidget {
             text,
             overflow: TextOverflow.ellipsis,
             maxLines: maxLines ?? 1,
+            textAlign: alignment,
             style: TextStyle(
               color: context.theme.subtextColor,
               fontSize: fontSize ?? 14,
@@ -195,6 +206,7 @@ class SecondaryText extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: maxLines ?? 1,
             maxFontSize: fontSize ?? 14,
+            textAlign: alignment,
             style: TextStyle(
               color: context.theme.subtextColor,
               fontSize: fontSize ?? 14,
@@ -207,6 +219,7 @@ class UserText extends StatelessWidget {
   const UserText({
     required this.text,
     required this.bold,
+    this.alignment,
     this.fontSize,
     this.maxLines,
     this.staticSize,
@@ -214,6 +227,7 @@ class UserText extends StatelessWidget {
   });
   final String text;
   final bool bold;
+  final TextAlign? alignment;
   final int? maxLines;
   final double? fontSize;
   final bool? staticSize;
@@ -224,6 +238,7 @@ class UserText extends StatelessWidget {
             text,
             overflow: TextOverflow.ellipsis,
             maxLines: maxLines ?? 1,
+            textAlign: alignment,
             style: TextStyle(
               color: context.theme.accentColor,
               fontSize: fontSize ?? 18,
@@ -235,6 +250,7 @@ class UserText extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: maxLines ?? 1,
             maxFontSize: fontSize ?? 18,
+            textAlign: alignment,
             style: TextStyle(
               color: context.theme.accentColor,
               fontSize: fontSize ?? 18,
@@ -248,6 +264,7 @@ class ButtonText extends StatelessWidget {
   const ButtonText({
     required this.text,
     required this.inverted,
+    this.alignment,
     this.maxLines,
     this.fontSize,
     this.staticSize,
@@ -255,6 +272,7 @@ class ButtonText extends StatelessWidget {
   });
   final String text;
   final bool inverted;
+  final TextAlign? alignment;
   final int? maxLines;
   final double? fontSize;
   final bool? staticSize;
@@ -265,6 +283,7 @@ class ButtonText extends StatelessWidget {
             text,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
+            textAlign: alignment,
             style: TextStyle(
               color: inverted
                   ? context.theme.inverseTextColor
@@ -279,6 +298,7 @@ class ButtonText extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             maxFontSize: fontSize ?? 16,
+            textAlign: alignment,
             style: TextStyle(
               color: inverted
                   ? context.theme.inverseTextColor

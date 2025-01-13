@@ -13,10 +13,9 @@ List<Page<dynamic>> onGenerateAppPages(
   AppStatus status,
   List<Page<dynamic>> pages,
 ) {
-  if (status.isUnauthenticated) {
-    return [LoginPage.page()];
-  }
-  if (status.isNewlyAuthenticated) {
+  if (status.isNewlyAuthenticated ||
+      status.isUnauthenticated ||
+      status.isAuthenticated) {
     return [HabitPage.page()];
   }
   if (status.needsUsername) {

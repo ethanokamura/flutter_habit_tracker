@@ -44,6 +44,7 @@
   "signIn": "Sign in",
   "signInFailure": "failed to sign in.",
   "signInPrompt": "welcome to {appTitle}",
+  "signInRequired": "Sign in is required to view your profile",
   "signOutFailure": "failed to sign out.",
   "streak": "You have a {streak} day streak 🔥",
   "success": "success!",

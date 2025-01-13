@@ -1,6 +1,5 @@
 import 'package:app_core/app_core.dart';
 import 'package:app_ui/app_ui.dart';
-import 'package:habit_tracker/app/cubit/app_cubit.dart';
 import 'package:habit_tracker/features/authentication/login/cubit/authentication_cubit.dart';
 import 'package:habit_tracker/l10n/l10n.dart';
 
@@ -41,8 +40,6 @@ class _OtpPromptState extends State<OtpPrompt> {
               ? () async {
                   try {
                     await context.read<AuthCubit>().signInWithOTP(_otp);
-                    if (!context.mounted) return;
-                    context.read<AppCubit>().verifyUsernameExistence();
                   } catch (e) {
                     // handle error
                     if (!context.mounted) return;

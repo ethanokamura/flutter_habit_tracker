@@ -23,6 +23,7 @@ class HabitRepository {
   int _messageId = 0;
   final int _totalMessages = 30;
 
+  /// Public getter for positive [_messageId]
   int get messageId => _messageId;
 
   // Stream of habit changes

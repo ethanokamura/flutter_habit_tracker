@@ -37,11 +37,4 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<void> _unwatchUser() {
     return _userSubscription.cancel();
   }
-
-  /// Updates the given [field] with [data] for the current user
-  Future<void> editField(String field, dynamic data) async =>
-      _userRepository.updateUserField(field: field, data: data);
-
-  Future<void> saveChanges(Map<String, dynamic> data) async =>
-      _userRepository.updateUser(data: data);
 }

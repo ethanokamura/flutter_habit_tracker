@@ -1,9 +1,9 @@
 import 'package:app_core/app_core.dart';
 import 'package:app_ui/app_ui.dart';
+import 'package:habit_tracker/app/cubit/app_cubit.dart';
 import 'package:habit_tracker/features/habits/habit_progress/view/habit_progress_page.dart';
 import 'package:habit_tracker/features/habits/habits.dart';
-import 'package:habit_tracker/features/profile/cubit/profile_cubit.dart';
-import 'package:habit_tracker/features/profile/profile.dart';
+import 'package:habit_tracker/features/profile/profile/view/signout_popup.dart';
 import 'package:habit_tracker/features/profile/profile/view/profile_header.dart';
 import 'package:habit_tracker/theme/theme_cubit.dart';
 import 'package:user_repository/user_repository.dart';
@@ -28,6 +28,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    void handleExit() => Navigator.of(context, rootNavigator: true).pop();
     return Padding(
       padding: const EdgeInsets.only(
         top: defaultPadding * 2,
@@ -57,35 +58,45 @@ class _ProfileViewState extends State<ProfileView> {
           ),
           ProfileHeader(user: widget.user),
           const VerticalSpacer(),
-          DefaultButton(
-            onSurface: true,
-            text: context.l10n.editProfile,
-            onTap: () => Navigator.push(
-              context,
-              bottomSlideTransition(
-                BlocProvider.value(
-                  value: context.read<ProfileCubit>(),
-                  child: const EditProfilePage(),
+          SizedBox(
+            width: 250,
+            child: Column(
+              children: [
+                DefaultButton(
+                  onSurface: true,
+                  text: context.l10n.habitHistory,
+                  onTap: () => Navigator.push(
+                    context,
+                    bottomSlideTransition(const HabitHistoryPage()),
+                  ),
                 ),
-              ),
+                DefaultButton(
+                  onSurface: true,
+                  text: context.l10n.checkProgress,
+                  onTap: () => Navigator.push(
+                    context,
+                    bottomSlideTransition(const HabitProgressPage()),
+                  ),
+                ),
+                ActionButton(
+                  text: context.l10n.logOut,
+                  icon: AppIcons.logOut,
+                  onTap: () async => showDialog(
+                    context: context,
+                    builder: (context) {
+                      return SignoutPopup(
+                        onDelete: () async {
+                          await context.read<AppCubit>().logOut();
+                          handleExit();
+                        },
+                        onCancel: handleExit,
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-          DefaultButton(
-            onSurface: true,
-            text: context.l10n.habitHistory,
-            onTap: () => Navigator.push(
-              context,
-              bottomSlideTransition(const HabitHistoryPage()),
-            ),
-          ),
-          DefaultButton(
-            onSurface: true,
-            text: context.l10n.checkProgress,
-            onTap: () => Navigator.push(
-              context,
-              bottomSlideTransition(const HabitProgressPage()),
-            ),
-          ),
+          )
         ],
       ),
     );

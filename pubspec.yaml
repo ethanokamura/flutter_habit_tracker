@@ -23,7 +23,7 @@ dependencies:
     path: packages/user_repository
 
 dev_dependencies:
-  analyzer: ^6.7.0
+  analyzer: ^7.1.0
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
@@ -33,4 +33,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/logo/
     - .env

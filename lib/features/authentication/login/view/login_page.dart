@@ -22,6 +22,8 @@ class LoginPage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              HabitRabbit(size: 128),
+              const VerticalSpacer(),
               AppBarText(
                 text: context.l10n.signInPrompt(context.l10n.appTitle),
               ),

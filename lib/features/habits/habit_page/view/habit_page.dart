@@ -8,7 +8,6 @@ import 'package:user_repository/user_repository.dart';
 
 class HabitPage extends StatefulWidget {
   const HabitPage({super.key});
-
   static MaterialPage<void> page() => MaterialPage<void>(child: HabitPage());
 
   @override
@@ -24,7 +23,7 @@ class _HabitPageState extends State<HabitPage>
       create: (_) => HabitCubit(
         habitRepository: context.read<HabitRepository>(),
         userRepository: context.read<UserRepository>(),
-      )..syncHabitCompletion(),
+      )..syncHabits(),
       child: BlocBuilder<HabitCubit, HabitState>(
         builder: (context, state) {
           if (state.isLoading) {

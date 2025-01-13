@@ -54,7 +54,7 @@ class _EditHabitBoxState extends State<EditHabitBox> {
             text: context.l10n.save,
             onTap: () {
               widget.onSave(_controller.text.trim());
-              Navigator.of(context, rootNavigator: true).pop();
+              context.popUntil((route) => route.isFirst);
             },
           ),
         ),

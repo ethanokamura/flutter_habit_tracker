@@ -32,6 +32,7 @@ class AppIcons {
   static const IconData delete = FontAwesomeIcons.trash;
   static const IconData edit = FontAwesomeIcons.pencil;
   static const IconData logOut = FontAwesomeIcons.arrowRightFromBracket;
+  static const IconData settings = FontAwesomeIcons.ellipsis;
 
   // toggles
   static const IconData checked = FontAwesomeIcons.solidSquareCheck;
@@ -41,5 +42,4 @@ class AppIcons {
 
   // pages
   static const IconData create = FontAwesomeIcons.plus;
-  static const IconData circleUser = FontAwesomeIcons.solidCircleUser;
 }

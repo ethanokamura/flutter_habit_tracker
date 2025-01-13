@@ -5,7 +5,7 @@ import 'package:user_repository/user_repository.dart';
 part 'habit_state.dart';
 
 class HabitCubit extends Cubit<HabitState> {
-  /// Creates a new instance of [PostCubit].
+  /// Creates a new instance of [HabitRepository].
   /// Requires a [HabitRepository] to handle data operations.
   HabitCubit({
     required HabitRepository habitRepository,

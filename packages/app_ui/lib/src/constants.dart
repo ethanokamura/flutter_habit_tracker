@@ -7,5 +7,5 @@ const double defaultElevation = 5;
 const double defaultRadius = 5;
 const BorderRadius defaultBorderRadius =
     BorderRadius.all(Radius.circular(defaultRadius));
-const String defaultDarkImage = 'assets/logo/rabbit_dark.png';
-const String defaultLightImage = 'assets/logo/rabbit_light.png';
+const String defaultDarkImage = 'assets/logo/rabbit_dark_clear.png';
+const String defaultLightImage = 'assets/logo/rabbit_light_clear.png';

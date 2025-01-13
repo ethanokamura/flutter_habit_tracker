@@ -10,6 +10,7 @@ class Habit {
   Id id = Isar.autoIncrement;
   late String name;
   String? supabaseId;
+  bool addedToSupabase = false;
   List<DateTime> completedDays = [];
   bool get isCompleted => completedDays.any((date) =>
       date.year == DateTime.now().year &&

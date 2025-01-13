@@ -221,6 +221,19 @@ extension Delete on HabitRepository {
 extension Sync on HabitRepository {
   Future<void> syncDatabase({required String userId}) async {
     try {
+      final existingSettings = await _isar.appSettings.where().findFirst();
+      if (existingSettings == null) return;
+      final isSynced = existingSettings.synced;
+      if (isSynced) return;
+      await _syncWithSupabase(userId: userId);
+    } catch (e) {
+      print(e);
+      throw HabitFailure.fromSync();
+    }
+  }
+
+  Future<void> _syncWithSupabase({required String userId}) async {
+    try {
       // get all isar habits
       final habits = await _isar.habits.where().findAll();
       if (habits.isEmpty) return;
@@ -228,60 +241,34 @@ extension Sync on HabitRepository {
       // index through each habit
       for (Habit habit in habits) {
         // add habit
-        if (habit.supabaseId == null || habit.supabaseId!.isEmpty) {
+        if (!habit.addedToSupabase) {
           final id = await _addSupabaseHabit(name: habit.name, userId: userId);
           await _isar.writeTxn(() async {
             habit.supabaseId = id;
+            habit.addedToSupabase = true;
             await _isar.habits.put(habit);
           });
         }
         // sync completions
         else {
-          // sync
           await _syncHabitCompletions(habit: habit);
         }
       }
+      await _markAsSynced();
     } catch (e) {
+      print(e);
       throw HabitFailure.fromSync();
     }
   }
 
-  Future<void> syncHabits({required String userId}) async {
+  Future<void> _markAsSynced() async {
     try {
-      // get all isar habits
-      final habits = await _isar.habits.where().findAll();
-      if (habits.isEmpty) return;
-
-      // index through each habit
-      for (Habit habit in habits) {
-        // add habit
-        if (habit.supabaseId == null || habit.supabaseId!.isEmpty) {
-          final id = await _addSupabaseHabit(name: habit.name, userId: userId);
-          await _isar.writeTxn(() async {
-            habit.supabaseId = id;
-            await _isar.habits.put(habit);
-          });
-        }
-      }
+      final existingSettings = await _isar.appSettings.where().findFirst();
+      if (existingSettings == null) return;
+      final settings = existingSettings..synced = true;
+      await _isar.writeTxn(() => _isar.appSettings.put(settings));
     } catch (e) {
-      throw HabitFailure.fromSync();
-    }
-  }
-
-  Future<void> syncHabitCompletions() async {
-    try {
-      // get all isar habits
-      final habits = await _isar.habits.where().findAll();
-      if (habits.isEmpty) return;
-
-      // index through each habit
-      for (Habit habit in habits) {
-        // add habit
-        if (habit.supabaseId != null && habit.supabaseId!.isNotEmpty) {
-          await _syncHabitCompletions(habit: habit);
-        }
-      }
-    } catch (e) {
+      print(e);
       throw HabitFailure.fromSync();
     }
   }
@@ -301,6 +288,7 @@ extension Sync on HabitRepository {
       if (res == null || res['id'] == null) return '';
       return res['id'] as String;
     } catch (e) {
+      print(e);
       throw HabitFailure.fromCreate();
     }
   }
@@ -310,6 +298,7 @@ extension Sync on HabitRepository {
       final isarCompletedDays = habit.completedDays;
       final supabaseCompletedDays =
           await _fetchSupabaseHabitCompletions(habitId: habit.supabaseId!);
+      // add completions in supabase
       for (DateTime completedDay in isarCompletedDays) {
         if (!supabaseCompletedDays.contains(completedDay)) {
           _addSupabaseCompletedDay(
@@ -317,7 +306,13 @@ extension Sync on HabitRepository {
             completedDay: completedDay,
           );
         }
+        // remove unnecessary days
+        if (_isLastWeek(completedDay)) {
+          habit.completedDays.remove(completedDay);
+          await _isar.writeTxn(() => _isar.habits.put(habit));
+        }
       }
+      // remove completions in supabase
       for (DateTime completedDay in supabaseCompletedDays) {
         if (!isarCompletedDays.contains(completedDay)) {
           _removeSupabaseCompletedDay(
@@ -327,8 +322,15 @@ extension Sync on HabitRepository {
         }
       }
     } catch (e) {
+      print(e);
       throw HabitFailure.fromSync();
     }
+  }
+
+  bool _isLastWeek(DateTime date) {
+    final startOfWeek = _today.subtract(Duration(days: DateTime.now().weekday));
+    print('is last week: ${date.isBefore(startOfWeek)}');
+    return date.isBefore(startOfWeek);
   }
 
   Future<Set<DateTime>> _fetchSupabaseHabitCompletions({
@@ -344,6 +346,7 @@ extension Sync on HabitRepository {
           habitCompletions.map((completion) => completion.createdAt!).toSet();
       return days;
     } catch (e) {
+      print(e);
       throw HabitFailure.fromGet();
     }
   }
@@ -359,6 +362,7 @@ extension Sync on HabitRepository {
     try {
       await _supabase.fromHabitCompletionsTable().insert(data);
     } catch (e) {
+      print(e);
       throw HabitFailure.fromCreate();
     }
   }
@@ -373,6 +377,7 @@ extension Sync on HabitRepository {
         HabitCompletions.createdAtConverter: completedDay,
       });
     } catch (e) {
+      print(e);
       throw HabitFailure.fromDelete();
     }
   }

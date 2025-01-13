@@ -9,4 +9,5 @@ class AppSettings {
   Id id = Isar.autoIncrement;
   DateTime? firstLaunchDate;
   DateTime? lastLaunchDate;
+  bool synced = false;
 }

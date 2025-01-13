@@ -1,5 +1,5 @@
 name: app_core
-description: "Main package for the habit tracker app"
+description: "Main package for the habit rabbit"
 version: 1.0.0+1
 publish_to: none
 

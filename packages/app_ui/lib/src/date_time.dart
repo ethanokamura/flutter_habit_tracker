@@ -16,15 +16,6 @@ const List<String> monthStrings = [
 ];
 
 const List<String> weekdayLetters = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-const List<String> weekdayString = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-];
 
 final currentDate = DateTime(
   DateTime.now().year,

@@ -99,51 +99,25 @@ class ActionButton extends StatelessWidget {
   }
 }
 
-/// Check box for board selection
-/// Requires [isSelected] to display different icons
-class CheckBox extends StatelessWidget {
-  const CheckBox({
-    required this.isSelected,
-    super.key,
-  });
-  final bool isSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return isSelected
-        ? accentIconStyle(context, AppIcons.checked, size: 22)
-        : defaultIconStyle(context, AppIcons.notChecked, size: 22);
-  }
-}
-
-/// Button for bottom modals
+/// Action button for the UI
+/// Accent colored background
 /// Requires [onTap] function to handle the tap event
-/// Requires an [icon] and [label] for UI
-class BottomModalButton extends StatelessWidget {
-  const BottomModalButton({
-    required this.icon,
-    required this.label,
+/// Optionally takes an [icon] and [text] for UI
+/// Optional padding using [horizontal] and [vertical]
+class EditButton extends StatelessWidget {
+  const EditButton({
     required this.onTap,
     super.key,
   });
-  final IconData icon;
-  final String label;
-  final void Function() onTap;
+
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-          onPressed: onTap,
-          style: defaultStyle(context, onSurface: true),
-          icon: defaultIconStyle(context, icon, size: 30),
-        ),
-        const VerticalSpacer(),
-        PrimaryText(text: label),
-      ],
+    return IconButton(
+      onPressed: onTap,
+      style: iconButtonStyle(),
+      icon: defaultIconStyle(context, AppIcons.edit, size: 18),
     );
   }
 }

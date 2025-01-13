@@ -17,19 +17,6 @@ ButtonStyle defaultStyle(BuildContext context, {bool? onSurface}) {
   );
 }
 
-ButtonStyle confirmStyle(BuildContext context, {bool? onSurface}) {
-  return ElevatedButton.styleFrom(
-    padding: const EdgeInsets.symmetric(
-      horizontal: defaultPadding,
-      vertical: 0,
-    ),
-    elevation: defaultElevation,
-    disabledBackgroundColor: context.theme.primaryColor,
-    backgroundColor: context.theme.accentColor,
-    shape: const RoundedRectangleBorder(borderRadius: defaultBorderRadius),
-  );
-}
-
 ButtonStyle accentStyle(BuildContext context) {
   return ElevatedButton.styleFrom(
     padding: const EdgeInsets.symmetric(
@@ -42,19 +29,10 @@ ButtonStyle accentStyle(BuildContext context) {
   );
 }
 
-ButtonStyle bottomModalStyle(BuildContext context) {
-  return ElevatedButton.styleFrom(
-    padding: const EdgeInsets.all(defaultPadding),
-    elevation: defaultElevation,
-    backgroundColor: context.theme.accentColor,
-    shape: const RoundedRectangleBorder(borderRadius: defaultBorderRadius),
-  );
-}
-
-ButtonStyle noBackgroundStyle() {
-  return ElevatedButton.styleFrom(
+ButtonStyle iconButtonStyle() {
+  return IconButton.styleFrom(
     padding: EdgeInsets.zero,
     backgroundColor: Colors.transparent,
-    elevation: defaultElevation,
+    elevation: 0,
   );
 }

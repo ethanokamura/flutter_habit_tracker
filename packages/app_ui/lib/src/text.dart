@@ -203,43 +203,6 @@ class SecondaryText extends StatelessWidget {
   }
 }
 
-class DescriptionText extends StatelessWidget {
-  const DescriptionText({
-    required this.text,
-    this.maxLines,
-    this.fontSize,
-    this.staticSize,
-    super.key,
-  });
-  final String text;
-  final int? maxLines;
-  final double? fontSize;
-  final bool? staticSize;
-  @override
-  Widget build(BuildContext context) {
-    return staticSize != null && staticSize!
-        ? Text(
-            text,
-            overflow: TextOverflow.ellipsis,
-            maxLines: maxLines ?? 4,
-            style: TextStyle(
-              color: context.theme.subtextColor,
-              fontSize: fontSize ?? 16,
-            ),
-          )
-        : AutoSizeText(
-            text,
-            overflow: TextOverflow.ellipsis,
-            maxLines: maxLines ?? 4,
-            maxFontSize: fontSize ?? 16,
-            style: TextStyle(
-              color: context.theme.subtextColor,
-              fontSize: fontSize ?? 16,
-            ),
-          );
-  }
-}
-
 class UserText extends StatelessWidget {
   const UserText({
     required this.text,

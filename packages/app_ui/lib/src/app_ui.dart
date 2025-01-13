@@ -1,10 +1,10 @@
-export 'bottom_modal.dart';
 export 'buttons.dart';
 export 'button_styles.dart';
 export 'colors.dart';
 export 'constants.dart';
 export 'date_time.dart';
 export 'extensions.dart';
+export 'habit_rabbit.dart';
 export 'icons.dart';
 export 'text_forms.dart';
 export 'text.dart';

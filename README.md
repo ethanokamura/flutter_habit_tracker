@@ -1,7 +1,9 @@
 # Habit Rabbit
 
+```
  /)_/)
 ( •.•)
+```
 
 Welcome to **Habit Rabbit**, your daily companion for habit tracking and achieving your goals! This Flutter-powered app is designed to help you build healthy habits, track your progress month-to-month, and stay motivated with the help of your cheerful rabbit friend.
 

@@ -16,7 +16,7 @@ class HabitPageView extends StatelessWidget {
   final HabitCubit habitCubit;
   @override
   Widget build(BuildContext context) {
-    void handleExit() => context.popUntil((route) => route.isFirst);
+    void handleExit() => Navigator.of(context, rootNavigator: true).pop();
     return CustomPageView(
       title: DateFormatter.formatTimestamp(DateTime.now()),
       centerTitle: false,
